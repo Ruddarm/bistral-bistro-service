@@ -1,15 +1,13 @@
 package com.bistral.app.bistral_bistro_service.repository;
 
-import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
 import com.bistral.app.bistral_bistro_service.entity.BranchEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.UUID;
 
-@Repository
-public interface BistroRepository extends JpaRepository<BistroEntity, UUID> {
 
-    public  List<BistroEntity> findByUserId(UUID userId);
+@Repository
+public interface BranchRepository extends JpaRepository<BranchEntity, UUID> {
+
 }
