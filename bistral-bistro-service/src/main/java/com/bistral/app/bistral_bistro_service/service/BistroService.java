@@ -28,10 +28,6 @@ public class BistroService {
         return modelMapper.map(bistroEntity, BistroResponse.class);
     }
 
-    public BistroResponse getBistroById(UUID bistroId) throws ResourceNotFoundException {
-        BistroEntity bistroEntity = getBistroEntityById(bistroId);
-        return modelMapper.map(bistroEntity, BistroResponse.class);
-    }
 
     public List<BistroResponse> getAllBistroOfUser() {
         List<BistroEntity> bistroEntityList = bistroRepository.findByUserId(UserContext.getUserContext());
@@ -40,7 +36,6 @@ public class BistroService {
                 .map((bistro) -> modelMapper.map(bistro, BistroResponse.class))
                 .collect(Collectors.toList());
     }
-
 
     public BistroEntity getBistroEntityById(UUID bistroId) throws ResourceNotFoundException {
         return bistroRepository.findById(bistroId)
