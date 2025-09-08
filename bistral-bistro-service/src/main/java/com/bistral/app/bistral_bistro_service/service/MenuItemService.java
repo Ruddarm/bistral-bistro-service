@@ -13,7 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Field;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -29,17 +33,32 @@ public class MenuItemService {
         @return menuItemResponse
      */
     public MenuItemResponse createMenuItem(MenuItemRequest menuItemRequest) {
-        MenuEntity menuEntity = menuService.getMenuById(menuItemRequest.getMenuId());
+        MenuEntity menuEntity = menuService.findByMenuIdAndBistro_BistroId(menuItemRequest.getMenuId(),
+                menuItemRequest.getBistroId());
         MenuItemEntity menuItemEntity = modelMapper.map(menuItemRequest, MenuItemEntity.class);
         menuItemEntity.setMenu(menuEntity);
         menuItemEntity = menuItemRepository.save(menuItemEntity);
         return modelMapper.map(menuItemEntity, MenuItemResponse.class);
     }
 
-    public MenuItemEntity getMenuItemEntityById(UUID menuItemId) {
+    public MenuItemEntity getMenuItemEntityById(UUID menuId, UUID menuItemId) {
         return menuItemRepository
-                .findById(menuItemId)
+                .findByItemIdAndMenu_MenuId(menuItemId, menuId)
                 .orElseThrow(() -> new ResourceNotFoundException("MenuItem", "MenuItem not found with Id" + menuItemId));
+    }
+
+    public MenuItemResponse updateMenuItem(UUID menuItemId, UUID menuId, Map<String, Object> updates) {
+        MenuItemEntity menuItemEntity = getMenuItemEntityById(menuItemId, menuId);
+        Set<String> blockedUpdates = Set.of("itemVariantEntityList", "menu");
+        MenuItemEntity finalMenuItemEntity = menuItemEntity;
+        updates.forEach((key, value) -> {
+            if (blockedUpdates.contains(key)) return;
+            Field field = ReflectionUtils.findField(MenuItemEntity.class, key);
+            field.setAccessible(true);
+            ReflectionUtils.setField(field, finalMenuItemEntity, value);
+        });
+        menuItemEntity = menuItemRepository.save(menuItemEntity);
+        return modelMapper.map(menuItemEntity, MenuItemResponse.class);
     }
 
 }

@@ -1,19 +1,16 @@
 package com.bistral.app.bistral_bistro_service.dtos;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
-@Builder
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BistroResponse {
-    private UUID bistroId;
-    private  String bistroName;
-    
+public class ErrorResponse {
+    private String name;
+    private String errorMsg;
+    private String errorCode;
 }
