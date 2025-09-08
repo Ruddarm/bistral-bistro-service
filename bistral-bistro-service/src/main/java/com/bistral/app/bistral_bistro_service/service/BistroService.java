@@ -4,6 +4,7 @@ import com.bistral.app.bistral_bistro_service.contexts.UserContext;
 import com.bistral.app.bistral_bistro_service.dtos.BistroRequest;
 import com.bistral.app.bistral_bistro_service.dtos.BistroResponse;
 import com.bistral.app.bistral_bistro_service.dtos.BranchResponse;
+import com.bistral.app.bistral_bistro_service.dtos.MenuResponse;
 import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
 import com.bistral.app.bistral_bistro_service.exceptions.ResourceNotFoundException;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
@@ -24,6 +25,8 @@ public class BistroService {
 
     public BistroResponse createBistro(BistroRequest bistroRequest) {
         BistroEntity bistroEntity = modelMapper.map(bistroRequest, BistroEntity.class);
+        // TODO : User user form user context after authentciaton is implemented
+        bistroEntity.setUserId(UUID.randomUUID());
         bistroRepository.save(bistroEntity);
         return modelMapper.map(bistroEntity, BistroResponse.class);
     }
@@ -39,9 +42,14 @@ public class BistroService {
 
     public BistroEntity getBistroEntityById(UUID bistroId) throws ResourceNotFoundException {
         return bistroRepository.findById(bistroId)
-                .orElseThrow(() -> new ResourceNotFoundException("Bistro", "Bistro Not Found Exception"));
+                .orElseThrow(() -> new ResourceNotFoundException("Bistro", "Bistro not found with Id " + bistroId));
     }
 
+    /*
+        A method to get a list of all branch for a particular bistro
+        @Param bistroId
+        @Return @link{List<BranchResponse>} return a list of all branches
+     */
     public List<BranchResponse> getListOfBranches(UUID bistroId) throws ResourceNotFoundException {
         BistroEntity bistroEntity = getBistroEntityById(bistroId);
         return bistroEntity.getBranches()
@@ -50,4 +58,14 @@ public class BistroService {
                 .collect(Collectors.toList());
     }
 
+    /*
+        A method to get a list of all menus for a bistro
+     */
+    public List<MenuResponse> getListOfMenus(UUID bistroId) throws  ResourceNotFoundException{
+        BistroEntity bistroEntity = getBistroEntityById(bistroId);
+        return  bistroEntity.getMenuEntities()
+                .stream()
+                .map((menu)-> modelMapper.map(menu,MenuResponse.class))
+                .collect(Collectors.toList());
+    }
 }
