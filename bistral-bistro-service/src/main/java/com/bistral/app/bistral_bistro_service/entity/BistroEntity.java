@@ -15,9 +15,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "bistro")
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
 public class BistroEntity {
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID bistroId;
     @Column(nullable = false)

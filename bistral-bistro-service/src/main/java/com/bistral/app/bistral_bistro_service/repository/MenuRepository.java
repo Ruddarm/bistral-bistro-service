@@ -13,12 +13,6 @@ import java.util.UUID;
 @Repository
 public interface MenuRepository extends JpaRepository<MenuEntity, UUID> {
 
-    //    @Query(
-//            "Select DISTINCT m from MenuEntity m " +
-//                    "LEFT JOIN FETCH m.menuItemEntities i " +
-//                    "LEFT JOIN FETCH i.itemVariantEntityList " +
-//                    "Where m.menuId = :menuId"
-//    )
 
     @EntityGraph(attributePaths = {
             "menuItemEntities",

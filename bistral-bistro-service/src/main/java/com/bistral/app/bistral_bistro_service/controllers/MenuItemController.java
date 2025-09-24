@@ -9,6 +9,7 @@ import com.bistral.app.bistral_bistro_service.service.MenuItemService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/bistros/menus/{menuId}/menuItem")
+@RequestMapping("/bistros/menus/{menuId}/menu-items")
 @RequiredArgsConstructor
 public class MenuItemController {
     private final MenuItemService menuItemService;
@@ -48,5 +49,18 @@ public class MenuItemController {
         return ResponseEntity.ok(menuItemService.updateMenuItem(menuItemId, menuId, updates));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<MenuItemResponse>> searchMenuItem(@PathVariable UUID menuId, @RequestParam String keyword,
+                                                                 @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(menuItemService.serachMenuItemsByMenu(keyword, menuId, page, size).map((menuItemEntity) -> {
+            MenuItemResponse menuItemResponse = modelMapper.map(menuItemEntity, MenuItemResponse.class);
+            ArrayList<MenuItemVariantResponse> menuItemVariantResponses = new ArrayList<>();
+            menuItemEntity.getItemVariantEntityList().stream().forEach((menuItemVariant) -> {
+                menuItemVariantResponses.add(modelMapper.map(menuItemVariant, MenuItemVariantResponse.class));
+            });
+            menuItemResponse.setMenuItemVariantResponsesList(menuItemVariantResponses);
+            return menuItemResponse;
+        }));
+    }
 
 }

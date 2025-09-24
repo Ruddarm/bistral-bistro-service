@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("bistros/menus/menuItems/{itemId}/variants")
+@RequestMapping("bistros/menus/menu-items/{itemId}/variants")
 public class MenuItemVariantController {
 
     private final ModelMapper modelMapper;

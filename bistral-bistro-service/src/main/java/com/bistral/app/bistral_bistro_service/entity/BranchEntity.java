@@ -1,5 +1,7 @@
 package com.bistral.app.bistral_bistro_service.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -32,5 +34,6 @@ public class BranchEntity {
     @EqualsAndHashCode.Include
     @JsonProperty("bistroId")
     private BistroEntity bistro;
-    private int tables;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true,mappedBy = "branch")
+    private List<TableEntity> tables = new ArrayList();
 }

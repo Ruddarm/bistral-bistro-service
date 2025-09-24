@@ -11,6 +11,10 @@ import com.bistral.app.bistral_bistro_service.exceptions.ResourceNotFoundExcepti
 import com.bistral.app.bistral_bistro_service.repository.MenuItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
@@ -45,6 +49,11 @@ public class MenuItemService {
         return menuItemRepository
                 .findByItemIdAndMenu_MenuId(menuItemId, menuId)
                 .orElseThrow(() -> new ResourceNotFoundException("MenuItem", "MenuItem not found with Id" + menuItemId));
+    }
+
+    public Page<MenuItemEntity> serachMenuItemsByMenu(String keyword, UUID menuId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("itemName").ascending());
+        return menuItemRepository.searchMenuItemsByMenuWithVariants(menuId,keyword,pageable);
     }
 
     public MenuItemResponse updateMenuItem(UUID menuItemId, UUID menuId, Map<String, Object> updates) {
