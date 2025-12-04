@@ -1,10 +1,7 @@
 package com.bistral.app.bistral_bistro_service.controllers;
 
 
-import com.bistral.app.bistral_bistro_service.dtos.BistroRequest;
-import com.bistral.app.bistral_bistro_service.dtos.BistroResponse;
-import com.bistral.app.bistral_bistro_service.dtos.BranchResponse;
-import com.bistral.app.bistral_bistro_service.dtos.MenuResponse;
+import com.bistral.app.bistral_bistro_service.dtos.*;
 import com.bistral.app.bistral_bistro_service.mapperInterface.BistroMapper;
 import com.bistral.app.bistral_bistro_service.service.BistroService;
 import jakarta.validation.Valid;
@@ -25,10 +22,12 @@ public class BistroController {
     private final ModelMapper modelMapper;
     private final BistroMapper bistroMapper;
 
+
     @GetMapping("/{bistroId}")
     public ResponseEntity<BistroResponse> getBistroById(@PathVariable UUID bistroId) {
         return ResponseEntity.ok(bistroService.getBistroResponseByBistroID(bistroId));
     }
+
 
     /*
         Create Bistro
@@ -47,5 +46,15 @@ public class BistroController {
     @GetMapping("/list/menus/{bistroId}")
     public ResponseEntity<List<MenuResponse>> getAllMenus(@PathVariable UUID bistroId) {
         return ResponseEntity.ok(bistroService.getListOfMenus(bistroId));
+    }
+
+    @GetMapping("/list/bistros/user/{userId}")
+    public ResponseEntity<List<BistroResponse>> getAllBistrosOfUser(@PathVariable UUID userId) {
+        return ResponseEntity.ok(bistroService.getAllBistroOfUser(userId));
+    }
+
+    @GetMapping("/list/bistros/menus/{userId}")
+    public ResponseEntity<List<BistroWithMenus>> getAllBistroWithMenus(@PathVariable UUID userId) {
+        return ResponseEntity.ok(bistroService.getListOfBistroWithMenus(userId));
     }
 }

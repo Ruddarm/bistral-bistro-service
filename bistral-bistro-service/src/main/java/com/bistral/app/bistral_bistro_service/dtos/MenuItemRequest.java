@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -25,6 +27,7 @@ public class MenuItemRequest {
     private UUID menuId;
     @NotNull
     private  UUID bistroId;
-
-
+    @NotNull
+    private  UUID categoryId;
+    private List<MenuItemVariantRequest> menuItemVariantRequests = new ArrayList<>();
 }

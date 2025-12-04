@@ -21,11 +21,13 @@ public class ExceptionAdvice {
         ex.getBindingResult().getFieldErrors()
                 .forEach((error) -> errors.put(error.getField(), error.getDefaultMessage()));
         return ResponseEntity.badRequest().body(errors);
+
     }
 
     @ExceptionHandler({ResourceNotFoundException.class})
     public  ResponseEntity<ErrorResponse> handelResourceNotFoundException(ResourceNotFoundException ex){
         return new ResponseEntity<>(ErrorResponse.builder().errorMsg(ex.getMessage()).build(), HttpStatus.BAD_REQUEST);
+
     }
 
     @ExceptionHandler({Exception.class})

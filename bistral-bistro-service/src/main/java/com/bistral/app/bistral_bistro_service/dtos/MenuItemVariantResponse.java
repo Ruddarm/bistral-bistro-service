@@ -16,11 +16,13 @@ import java.util.UUID;
 public class MenuItemVariantResponse {
     private UUID itemId;
     private String itemName;
+    private String variantName;
     private UUID variantId;
     private BigDecimal price;
     private BigDecimal taxRate;
     private boolean isTaxIncluded;
     private BigDecimal qty;
     private ItemUnit unit;
+
 
 }

@@ -18,7 +18,8 @@ public interface MenuItemRepository extends JpaRepository<MenuItemEntity, UUID> 
 
     @EntityGraph(
             attributePaths = {
-                    "itemVariantEntityList"
+                    "itemVariantEntityList",
+                    "menuItemCategory"
             }
     )
     public Optional<MenuItemEntity> findByItemIdAndMenu_MenuId(@Param("itemId") UUID itemId, @Param("menuID") UUID menuId);

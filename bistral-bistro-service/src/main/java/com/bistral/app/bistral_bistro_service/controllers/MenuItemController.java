@@ -41,6 +41,8 @@ public class MenuItemController {
                 }));
         MenuItemResponse menuItemResponse = modelMapper.map(menuItemEntity, MenuItemResponse.class);
         menuItemResponse.setMenuItemVariantResponsesList(itemVariantResponsesList);
+        menuItemResponse.setCategoryId(menuItemEntity.getMenuItemCategory().getCategoryId());
+        menuItemResponse.setCategoryName(menuItemEntity.getMenuItemCategory().getCategoryName());
         return ResponseEntity.ok(menuItemResponse);
     }
 

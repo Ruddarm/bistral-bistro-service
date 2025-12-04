@@ -1,5 +1,6 @@
 package com.bistral.app.bistral_bistro_service.service;
 
+import com.bistral.app.bistral_bistro_service.dtos.MenuItemVariantBulkRequest;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemVariantRequest;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemVariantResponse;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemEntity;
@@ -19,9 +20,8 @@ import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -30,7 +30,7 @@ public class MenuItemVariantService {
     private final MenuItemVariantRepository menuItemVariantRepository;
     private final ModelMapper modelMapper;
     private final MenuItemVariantMapper menuItemVariantMapper;
-
+//    private Map<UUID, MenuItemVariantResponse> menuItemVariantResponseHashMap;
 
     public MenuItemVariantEntity createMenuItemVariants(MenuItemVariantRequest menuItemVariantRequest) {
         MenuItemEntity menuItemEntity = menuItemService.getMenuItemEntityById(menuItemVariantRequest.getMenuId(), menuItemVariantRequest.getItemId());
@@ -44,7 +44,17 @@ public class MenuItemVariantService {
                 .orElseThrow(() -> new ResourceNotFoundException("Item Variant", "Item variant is not found with Id : " + variantId));
     }
 
-
+    public List<MenuItemVariantResponse> getMenuItemVariantBulk(MenuItemVariantBulkRequest menuItemVariantBulkRequestList) {
+            return   menuItemVariantRepository
+                    .getAllVariantList()
+                    .stream()
+                    .map((menuItemVariant) -> {
+                        MenuItemVariantResponse res = menuItemVariantMapper.toVariantResponse(menuItemVariant);
+                        res.setItemId(menuItemVariant.getMenuItem().getItemId());
+                        res.setItemName(menuItemVariant.getMenuItem().getItemName());
+                        return res;
+                    }).toList();
+    }
 
 
     public MenuItemVariantResponse updateMenuItemVariantsById(UUID variantId, UUID itemId, Map<String, Object> updates) {

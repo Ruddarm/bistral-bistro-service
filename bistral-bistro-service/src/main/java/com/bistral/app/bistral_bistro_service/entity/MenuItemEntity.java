@@ -1,10 +1,8 @@
 package com.bistral.app.bistral_bistro_service.entity;
 
-import com.bistral.app.bistral_bistro_service.entity.enums.ItemUnit;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -33,6 +31,9 @@ public class MenuItemEntity {
     @ManyToOne
     @JoinColumn(name = "menuId")
     private MenuEntity menu;
-    @OneToMany(mappedBy = "menuItem", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private Set<MenuItemVariantEntity> itemVariantEntityList = new HashSet<>();
+    @OneToMany(mappedBy = "menuItem", fetch = FetchType.LAZY, cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<MenuItemVariantEntity> itemVariantEntityList = new ArrayList<>();
+    @JoinColumn(name = "category_Id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private MenuItemCategoryEntity menuItemCategory;
 }

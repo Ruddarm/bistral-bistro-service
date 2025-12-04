@@ -17,4 +17,9 @@ public class BranchResponse {
     private UUID branchId;
     private String branchName;
     private String Address;
+
+    BranchResponse(UUID branchId, String branchName) {
+        this.branchId = branchId;
+        this.branchName = branchName;
+    }
 }

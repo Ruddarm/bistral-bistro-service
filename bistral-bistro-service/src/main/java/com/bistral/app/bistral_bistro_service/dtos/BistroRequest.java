@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.amqp.RabbitConnectionDetails;
 
+import java.util.UUID;
+
 @Builder
 @Data
 @NoArgsConstructor
@@ -21,4 +23,6 @@ public class BistroRequest {
     private String logoUrl;
 
     private String address;
+
+    private UUID userId;
 }

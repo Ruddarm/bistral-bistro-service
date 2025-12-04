@@ -5,6 +5,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,10 +28,13 @@ public class MenuItemVariantRequest {
     @Min(0)
     private BigDecimal price;
     @NotNull
+    @NotEmpty
+    private  String variantName;
+//    @NotNull
     @Min(0)
     private BigDecimal taxRate;
-    @NotNull
-    private boolean isTaxIncluded;
+//    @NotNull
+    private boolean isTaxIncluded=false;
     @NotNull
     @Min(0)
     private BigDecimal qty;

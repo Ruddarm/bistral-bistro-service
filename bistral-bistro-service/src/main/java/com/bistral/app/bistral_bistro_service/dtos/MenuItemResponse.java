@@ -19,5 +19,7 @@ public class MenuItemResponse {
     private UUID itemId;
     private String itemName;
     private boolean isVeg;
+    private UUID categoryId;
+    private String categoryName;
     private List<MenuItemVariantResponse> menuItemVariantResponsesList = new ArrayList<>();
 }

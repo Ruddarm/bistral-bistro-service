@@ -25,7 +25,7 @@ public class BistroEntity {
     @Column(nullable = false)
     private String bistroName;
     private String logoUrl;
-    private String Address;
+//    private String Address;
     @Column(nullable = false)
     private UUID userId;
     @CreationTimestamp

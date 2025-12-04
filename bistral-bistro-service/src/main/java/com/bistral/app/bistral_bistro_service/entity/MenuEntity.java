@@ -31,5 +31,7 @@ public class MenuEntity {
     @ManyToOne
     @JoinColumn(name = "bistroId")
     private BistroEntity bistro;
+    @OneToMany(mappedBy = "menuEntity")
+    private List<MenuItemCategoryEntity> menuItemCategoryList;
 
 }

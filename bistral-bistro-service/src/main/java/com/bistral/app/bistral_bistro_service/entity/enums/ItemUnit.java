@@ -6,7 +6,9 @@ public enum ItemUnit {
     ML("ml"),
     LITRE("litre"),
     G("g"),
-    KG("kg");
+    KG("kg"),
+    Glass("glass"),
+    Inch("inch");
 
     private final String displayName;
 

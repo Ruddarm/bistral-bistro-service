@@ -1,9 +1,6 @@
 package com.bistral.app.bistral_bistro_service.service;
 
-import com.bistral.app.bistral_bistro_service.dtos.MenuItemResponse;
-import com.bistral.app.bistral_bistro_service.dtos.MenuItemVariantResponse;
-import com.bistral.app.bistral_bistro_service.dtos.MenuRequest;
-import com.bistral.app.bistral_bistro_service.dtos.MenuResponse;
+import com.bistral.app.bistral_bistro_service.dtos.*;
 import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuEntity;
 import com.bistral.app.bistral_bistro_service.exceptions.ResourceNotFoundException;
@@ -14,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -31,6 +29,11 @@ public class MenuService {
         menuEntity.setBistro(bistro);
         menuEntity = menuRepository.save(menuEntity);
         return modelMapper.map(menuEntity, MenuResponse.class);
+    }
+
+    public MenuEntity findById(UUID menuId) {
+        return menuRepository.findById(menuId)
+                .orElseThrow(() -> new ResourceNotFoundException("Menu", "Menu not found with : " + menuId));
     }
 
     public MenuEntity findByMenuIdAndBistro_BistroId(UUID menuId, UUID bistroId) {
@@ -84,5 +87,38 @@ public class MenuService {
         return modelMapper.map(
                 menuRepository.save(menuEntity), MenuResponse.class
         );
+    }
+
+    public MenuCardResponse getMenuCard(UUID menuId) {
+        List<MenuItemFlatRow> menuItemFlatRows = menuRepository.getMenuItemFlatRows(menuId);
+        MenuCardResponse menuCardResponse = new MenuCardResponse();
+        HashMap<String, List<MenuItemResponse>> items = new LinkedHashMap<>();
+        HashMap<UUID, MenuItemResponse> itemMap = new HashMap<>();
+        for (MenuItemFlatRow row : menuItemFlatRows) {
+            System.out.println(row);
+            items.putIfAbsent(row.getCategoryName() == null ? "Uncategorized" : row.getCategoryName(), new ArrayList<>());
+            itemMap.putIfAbsent(row.getItemId(), MenuItemResponse.builder()
+                    .itemId(row.getItemId())
+                    .itemName(row.getItemName())
+                    .isVeg(row.getIsVeg())
+                            .categoryName(row.getCategoryName())
+                    .menuItemVariantResponsesList(new ArrayList<>())
+                    .build());
+            if (row.getVariantId() != null) {
+                itemMap.get(row.getItemId()).getMenuItemVariantResponsesList().add(MenuItemVariantResponse.builder()
+                                .variantName(row.getVariantName())
+                        .variantId(row.getVariantId())
+                        .isTaxIncluded(row.getIsTaxIncluded())
+                        .price(row.getPrice())
+                        .qty(row.getQty())
+                        .unit(row.getItemUnit())
+                        .build());
+            }
+        }
+        for(MenuItemResponse menuItemResponse : itemMap.values()){
+
+            items.get(menuItemResponse.getCategoryName()).add(menuItemResponse);
+        }
+        return MenuCardResponse.builder().menuId(menuId).menuItems(items).build();
     }
 }

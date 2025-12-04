@@ -24,9 +24,11 @@ public class MenuItemVariantEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     @EqualsAndHashCode.Include
     private UUID variantId;
+    @Column(nullable = false)
+    private String variantName;
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = true, precision = 10, scale = 2)
     private BigDecimal taxRate;
     @Column(nullable = false)
     private boolean isTaxIncluded;
@@ -36,7 +38,7 @@ public class MenuItemVariantEntity {
     @Column(nullable = false)
     private ItemUnit unit;
     @ManyToOne
-    @JoinColumn(name = "menu_item_id")
+    @JoinColumn(nullable = false, name = "menu_item_id")
     private MenuItemEntity menuItem;
 
     @Override

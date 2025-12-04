@@ -23,16 +23,21 @@ public interface BistroRepository extends JpaRepository<BistroEntity, UUID> {
             """)
     Optional<BistroEntity> findBistroWithBranches(UUID bistroId);
 
+    @Query("""
+            Select b , branch.branchId,branch.branchName from  BistroEntity b Left join Fetch b.branches branch where b.userId= :userId 
+            """)
     List<BistroEntity> findByUserId(UUID userId);
 
     @Query("""
-                SELECT new com.bistral.app.bistral_bistro_service.dtos.BistroResponse(
-                    b.bistroId, b.bistroName
-                )
-                FROM BistroEntity b
+                SELECT  b
+                FROM BistroEntity b 
+                LEFT JOIN FETCH b.branches 
                 WHERE b.bistroId = :bistroId
             """)
-    Optional<BistroResponse> findByBistroId(UUID bistroId);
+    Optional<BistroEntity> findByBistroId(UUID bistroId);
+
+    @Query("Select b From BistroEntity b Left join Fetch b.menuEntities m Where b.userId= :userId Order By b.bistroName")
+    List<BistroEntity> findAllBistroWithMenuByUserId(UUID userId);
 
 //    public Optional<BistroEntity> findBistroWithBranches(@Param("bistroId") UUID bistroId);
 }
