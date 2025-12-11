@@ -27,4 +27,10 @@ public class TableEntity {
     @EqualsAndHashCode.Include
     @JoinColumn(name = "branch")
     private BranchEntity branch;
+
+    @ManyToOne
+    @EqualsAndHashCode.Include
+    @JoinColumn(name = "zone_id")
+    private  BranchZoneEntity zone;
+
 }
