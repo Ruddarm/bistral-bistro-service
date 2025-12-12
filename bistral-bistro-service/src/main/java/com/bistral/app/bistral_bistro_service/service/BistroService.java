@@ -35,13 +35,14 @@ public class BistroService {
 
     public List<BistroResponse> getAllBistroOfUser(UUID userId) {
         List<BistroEntity> bistroEntityList = bistroRepository.findByUserId(userId);
-        HashSet<UUID> bistrosSet = new  HashSet<>();
+        HashSet<UUID> bistrosSet = new HashSet<>();
         return bistroEntityList
                 .stream()
                 .map((bistro) -> {
-                    if(bistrosSet.contains(bistro.getBistroId())) return null;
+                    if (bistrosSet.contains(bistro.getBistroId())) return null;
                     bistrosSet.add(bistro.getBistroId());
-                    List<BranchResponse> branchResponses = bistro.getBranches().stream().map(branch -> (BranchResponse.builder().branchId(branch.getBranchId()).branchName(branch.getBranchName()).build())).toList();
+                    List<BranchResponse> branchResponses = bistro.getBranches().stream().map(branch -> (BranchResponse.builder().branchId(branch.getBranchId()).branchName(branch.getBranchName())
+                            .build())).toList();
                     BistroResponse bistroResponse = modelMapper.map(bistro, BistroResponse.class);
 //                    System.out.println();
                     bistroResponse.setBranchResponses(branchResponses);

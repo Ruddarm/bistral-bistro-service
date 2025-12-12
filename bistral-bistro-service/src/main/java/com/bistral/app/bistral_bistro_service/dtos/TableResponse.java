@@ -12,6 +12,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TableResponse {
-    private  UUID tableId;
+
+    private UUID tableId;
     private int tableNo;
+    private UUID zoneId;
+
 }

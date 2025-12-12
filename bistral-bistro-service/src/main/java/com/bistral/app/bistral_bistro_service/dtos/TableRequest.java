@@ -9,6 +9,7 @@ import java.util.UUID;
 @Builder
 @Data
 public class TableRequest {
+    private UUID zoneId;
     private int count;
     @NotNull
     private UUID branchId;

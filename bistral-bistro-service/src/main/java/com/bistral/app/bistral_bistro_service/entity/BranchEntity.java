@@ -34,8 +34,8 @@ public class BranchEntity {
     @EqualsAndHashCode.Include
     @JsonProperty("bistroId")
     private BistroEntity bistro;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true,mappedBy = "branch")
-    private List<TableEntity> tables = new ArrayList();
+//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true,mappedBy = "branch")
+//    private List<TableEntity> tables = new ArrayList();
     @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "branch")
     private  List<BranchZoneEntity> zones = new ArrayList<>();
 }

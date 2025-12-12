@@ -15,10 +15,11 @@ public interface TableRepository extends JpaRepository<TableEntity, UUID> {
 
     @Query("""
                 SELECT new com.bistral.app.bistral_bistro_service.dtos.TableResponse(
-                    t.tableId,t.tableNo
+                    t.tableId,t.tableNo,t.zone.zoneId
                 )
                 FROM TableEntity t
                 WHERE t.branch.branchId = :branchId
+                and t.zone.zoneId = :zoneId
             """)
-    List<TableResponse> findByBranch_BranchId(UUID branchId);
+    List<TableResponse> findByBranch_BranchId(UUID branchId,UUID zoneId);
 }

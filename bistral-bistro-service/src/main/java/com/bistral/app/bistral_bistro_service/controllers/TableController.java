@@ -22,9 +22,9 @@ public class TableController {
         return tableService.createTables(tableRequest);
     }
 
-    @GetMapping
-    private  List<TableResponse> getTable(@PathVariable UUID branchId){
-        return tableService.getTables(branchId);
+    @GetMapping("/{zoneId}")
+    private  List<TableResponse> getTable(@PathVariable UUID branchId, @PathVariable UUID zoneId){
+        return tableService.getTables(branchId,zoneId);
     }
 
 }

@@ -3,6 +3,7 @@ package com.bistral.app.bistral_bistro_service.service;
 import com.bistral.app.bistral_bistro_service.dtos.TableRequest;
 import com.bistral.app.bistral_bistro_service.dtos.TableResponse;
 import com.bistral.app.bistral_bistro_service.entity.BranchEntity;
+import com.bistral.app.bistral_bistro_service.entity.BranchZoneEntity;
 import com.bistral.app.bistral_bistro_service.entity.TableEntity;
 import com.bistral.app.bistral_bistro_service.mapperInterface.TableMapper;
 import com.bistral.app.bistral_bistro_service.repository.TableRepository;
@@ -27,13 +28,16 @@ public class TableService {
         for (int i = 0; i < tableRequest.getCount(); i++) {
             tableEntities.add(TableEntity.builder()
                     .tableNo(i)
+                    .zone(BranchZoneEntity.builder()
+                            .zoneId(tableRequest.getZoneId()).build())
                     .branch(branch).build());
         }
         tableRepository.saveAll(tableEntities);
         return tableEntities.stream().map(tableMapper::toTableResponse).toList();
     }
-    public  List<TableResponse> getTables(UUID branchId){
-        return  tableRepository.findByBranch_BranchId(branchId);
+
+    public List<TableResponse> getTables(UUID branchId, UUID zoneId) {
+        return tableRepository.findByBranch_BranchId(branchId, zoneId);
     }
 
 }

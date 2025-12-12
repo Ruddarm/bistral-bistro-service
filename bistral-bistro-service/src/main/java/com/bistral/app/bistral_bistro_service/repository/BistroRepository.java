@@ -23,8 +23,14 @@ public interface BistroRepository extends JpaRepository<BistroEntity, UUID> {
             """)
     Optional<BistroEntity> findBistroWithBranches(UUID bistroId);
 
+    //
+//    @Query("""
+//            Select b.bistroId, b.bistroName , branch.branchId,branch.branchName from  BistroEntity b Left join Fetch b.branches branch left join fetch branch.zones z where b.userId= :userId
+//            """)
     @Query("""
-            Select b , branch.branchId,branch.branchName from  BistroEntity b Left join Fetch b.branches branch where b.userId= :userId 
+                SELECT DISTINCT b FROM BistroEntity b
+                LEFT JOIN FETCH b.branches br
+                WHERE b.userId = :userId
             """)
     List<BistroEntity> findByUserId(UUID userId);
 
@@ -38,6 +44,7 @@ public interface BistroRepository extends JpaRepository<BistroEntity, UUID> {
 
     @Query("Select b From BistroEntity b Left join Fetch b.menuEntities m Where b.userId= :userId Order By b.bistroName")
     List<BistroEntity> findAllBistroWithMenuByUserId(UUID userId);
+
 
 //    public Optional<BistroEntity> findBistroWithBranches(@Param("bistroId") UUID bistroId);
 }
