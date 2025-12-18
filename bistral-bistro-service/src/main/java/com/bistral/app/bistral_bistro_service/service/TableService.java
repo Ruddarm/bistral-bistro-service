@@ -7,6 +7,7 @@ import com.bistral.app.bistral_bistro_service.entity.BranchZoneEntity;
 import com.bistral.app.bistral_bistro_service.entity.TableEntity;
 import com.bistral.app.bistral_bistro_service.mapperInterface.TableMapper;
 import com.bistral.app.bistral_bistro_service.repository.TableRepository;
+import com.bistral.app.bistral_bistro_service.service.bistro_zones.implementaions.ZoneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,17 +22,22 @@ public class TableService {
     private final TableRepository tableRepository;
     private final BranchService branchService;
     private final TableMapper tableMapper;
+    private final ZoneService zoneService;
 
     public List<TableResponse> createTables(TableRequest tableRequest) {
         List<TableEntity> tableEntities = new ArrayList<>();
         BranchEntity branch = BranchEntity.builder().branchId(tableRequest.getBranchId()).build();
-        for (int i = 0; i < tableRequest.getCount(); i++) {
+        BranchZoneEntity branchZoneEntity = zoneService.getZone(tableRequest.getZoneId());
+        int count = tableRepository.findByBranch_BranchId(tableRequest.getBranchId(), tableRequest.getZoneId())
+                .size();
+//        count = count count;
+        for (int i = 1; i <= tableRequest.getCount(); i++) {
             tableEntities.add(TableEntity.builder()
-                    .tableNo(i)
-                    .zone(BranchZoneEntity.builder()
-                            .zoneId(tableRequest.getZoneId()).build())
+                    .tableNo(++count)
+                    .zone(branchZoneEntity)
                     .branch(branch).build());
         }
+
         tableRepository.saveAll(tableEntities);
         return tableEntities.stream().map(tableMapper::toTableResponse).toList();
     }

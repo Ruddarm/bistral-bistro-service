@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +40,14 @@ public class ZoneController {
     @GetMapping("/{branchId}")
     public ResponseEntity<List<ZoneResponse>> getAllZones(@PathVariable UUID branchId) {
         return ResponseEntity.ok(izoneService.getAllBranchZones(branchId)
-                .stream().map((zone) -> modelMapper.map(zone, ZoneResponse.class)).toList()
+                .stream().map((zone) -> {
+                    ZoneResponse zoneResponse = modelMapper.map(zone, ZoneResponse.class);
+                    List<TableResponse> tableResponses = zone.getTables().stream().map((table) ->
+                            modelMapper.map(table, TableResponse.class)
+                    ).toList();
+                    zoneResponse.setTableResponses(tableResponses);
+                    return zoneResponse;
+                }).toList()
         );
     }
 

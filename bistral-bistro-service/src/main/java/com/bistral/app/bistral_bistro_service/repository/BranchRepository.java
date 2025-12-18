@@ -25,4 +25,6 @@ public interface BranchRepository extends JpaRepository<BranchEntity, UUID> {
             @Param("branchId") UUID branchId,
             @Param("bistroId") UUID bistroId
     );
+
+
 }
