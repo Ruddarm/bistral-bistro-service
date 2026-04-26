@@ -39,6 +39,7 @@ public class MenuController {
                 menuService.updateMenuByMenuIdAndBistroID(menuId, bistroId, updates));
     }
 
+
     @GetMapping("/{menuId}/card")
     public  ResponseEntity<MenuCardResponse> getMenuCard(@PathVariable UUID menuId){
         return  ResponseEntity.ok(menuService.getMenuCard(menuId));
