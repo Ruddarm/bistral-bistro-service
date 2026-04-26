@@ -1,2 +1,0 @@
-ALTER TABLE bistro_tables
-ALTER COLUMN zone_id SET NOT NULL;
