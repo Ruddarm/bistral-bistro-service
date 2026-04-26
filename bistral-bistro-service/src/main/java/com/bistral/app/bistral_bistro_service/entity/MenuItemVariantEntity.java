@@ -41,6 +41,9 @@ public class MenuItemVariantEntity {
     @JoinColumn(nullable = false, name = "menu_item_id")
     private MenuItemEntity menuItem;
 
+    @Transient
+    private String itemCode;
+
     @Override
     public String toString() {
         return String.format("Variant Id : %s \n price : %s \n taxRate : %s \n  Qty : %s \n Unit : %s \n Item Id : %s",

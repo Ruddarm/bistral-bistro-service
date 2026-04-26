@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -25,7 +24,6 @@ public class BistroEntity {
     @Column(nullable = false)
     private String bistroName;
     private String logoUrl;
-//    private String Address;
     @Column(nullable = false)
     private UUID userId;
     @CreationTimestamp

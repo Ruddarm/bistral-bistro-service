@@ -34,4 +34,5 @@ public class MenuEntity {
     @OneToMany(mappedBy = "menuEntity")
     private List<MenuItemCategoryEntity> menuItemCategoryList;
 
+
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport name="invoice_report" pageWidth="595" pageHeight="842">
+
+    <field name="orderId" class="java.lang.String"/>
+    <field name="product" class="java.lang.String"/>
+    <field name="price" class="java.lang.Double"/>
+
+    <title>
+        <band height="60">
+            <textField>
+                <reportElement x="200" y="10" width="200" height="30"/>
+                <textFieldExpression><![CDATA["INVOICE REPORT"]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="30">
+            <staticText>
+                <reportElement x="0" y="0" width="180" height="20"/>
+                <text><![CDATA[Order ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="200" y="0" width="180" height="20"/>
+                <text><![CDATA[Product]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="400" y="0" width="100" height="20"/>
+                <text><![CDATA[Price]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="25">
+            <textField>
+                <reportElement x="0" y="0" width="180" height="20"/>
+                <textFieldExpression><![CDATA[$F{orderId}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="200" y="0" width="180" height="20"/>
+                <textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="400" y="0" width="100" height="20"/>
+                <textFieldExpression><![CDATA[$F{price}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+</jasperReport>

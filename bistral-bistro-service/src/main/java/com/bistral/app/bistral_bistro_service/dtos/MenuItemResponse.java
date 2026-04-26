@@ -22,4 +22,5 @@ public class MenuItemResponse {
     private UUID categoryId;
     private String categoryName;
     private List<MenuItemVariantResponse> menuItemVariantResponsesList = new ArrayList<>();
+
 }
