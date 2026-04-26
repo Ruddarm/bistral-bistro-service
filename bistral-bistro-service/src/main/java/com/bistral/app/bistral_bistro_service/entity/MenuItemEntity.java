@@ -36,6 +36,4 @@ public class MenuItemEntity {
     @JoinColumn(name = "category_Id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private MenuItemCategoryEntity menuItemCategory;
-    @Transient
-    private String itemCode;
 }

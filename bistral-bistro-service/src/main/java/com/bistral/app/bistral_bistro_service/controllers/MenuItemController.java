@@ -4,26 +4,16 @@ package com.bistral.app.bistral_bistro_service.controllers;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemRequest;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemResponse;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemVariantResponse;
-import com.bistral.app.bistral_bistro_service.entity.ImportJob;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemEntity;
-//import com.bistral.app.bistral_bistro_service.service.MenuItemAndVariantExcelImport;
-import com.bistral.app.bistral_bistro_service.entity.enums.JobStatus;
-import com.bistral.app.bistral_bistro_service.service.ImportJob.Services.ImportJobService;
 import com.bistral.app.bistral_bistro_service.service.MenuItemService;
-import com.bistral.app.bistral_bistro_service.service.menuItem.service.MenuItemExcelImporter;
-import com.bistral.app.bistral_bistro_service.service.menuItem.service.MenuItemExcelImporterAsync;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -35,11 +25,6 @@ import java.util.UUID;
 public class MenuItemController {
     private final MenuItemService menuItemService;
     private final ModelMapper modelMapper;
-    private final MenuItemExcelImporter menuItemExcelImporter;
-    private final ImportJobService importJobService;
-//    private final NotificationController notificationController;
-    private final MenuItemExcelImporterAsync menuItemExcelImporterAsync;
-//    private final MenuItemAndVariantExcelImport menuItemAndVariantExcelImport;
 
     @PostMapping
     public ResponseEntity<MenuItemResponse> createMenuItem(@Valid @RequestBody MenuItemRequest menuItemRequest) {
@@ -78,22 +63,6 @@ public class MenuItemController {
             menuItemResponse.setMenuItemVariantResponsesList(menuItemVariantResponses);
             return menuItemResponse;
         }));
-    }
-
-    @PostMapping("/import/excel")
-    public void importMenuItemExcel(@PathVariable("menuId") UUID menuId, HttpServletResponse response, @RequestParam("file") MultipartFile multipartFile) throws IOException {
-        Workbook wb = menuItemExcelImporter.importItem(menuId, multipartFile);
-        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=errorResponse.xlsx");
-        wb.write(response.getOutputStream());
-        wb.close();
-    }
-
-    @PostMapping("/import/async/excel")
-    public ResponseEntity<ImportJob> importMenuItemAsync(@PathVariable("menuId") UUID menuId, @RequestParam("file") MultipartFile multipartFile) throws InterruptedException {
-        ImportJob importJob = importJobService.createImportJob(ImportJob.builder().jobStatus(JobStatus.PENDING).build());
-        menuItemExcelImporterAsync.ImportFromExcel(menuId, multipartFile);
-        return ResponseEntity.ok(importJob);
     }
 
 }

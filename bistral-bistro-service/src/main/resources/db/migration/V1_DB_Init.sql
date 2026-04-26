@@ -343,4 +343,3 @@ ALTER TABLE ONLY public.menu_item
 Alter table public.bistro_branch add constraint unique_branch_name unique(branch_name,bistro_id);
 Alter table public.bistro_branch alter column bistro_id set not null
 
-
