@@ -11,7 +11,8 @@ import org.hibernate.engine.internal.Cascade;
 
 @Entity
 @Table(name = "bistro_branch",
-        indexes = {@Index(name = "branchId_bistro", columnList = "bistroId,branchId",unique = true)}
+        indexes = {@Index(name = "branchId_bistro", columnList = "bistroId,branchId", unique = true)
+        }
 )
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,13 +30,11 @@ public class BranchEntity {
     @Column(nullable = true)
     private String address = new String();
     @ManyToOne(
-    fetch = FetchType.LAZY)
-    @JoinColumn(name = "bistroId")
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "bistroId" , nullable = false)
     @EqualsAndHashCode.Include
     @JsonProperty("bistroId")
     private BistroEntity bistro;
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true,mappedBy = "branch")
-//    private List<TableEntity> tables = new ArrayList();
-    @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "branch")
-    private  List<BranchZoneEntity> zones = new ArrayList<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "branch")
+    private List<BranchZoneEntity> zones = new ArrayList<>();
 }

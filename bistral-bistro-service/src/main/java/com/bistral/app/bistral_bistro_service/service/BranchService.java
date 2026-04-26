@@ -9,6 +9,7 @@ import com.bistral.app.bistral_bistro_service.exceptions.ResourceNotFoundExcepti
 import com.bistral.app.bistral_bistro_service.mapperInterface.BranchMapper;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
 import com.bistral.app.bistral_bistro_service.repository.BranchRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,8 @@ public class BranchService {
     private final BranchMapper branchMapper;
     private final BranchRepository branchRepository;
     private final BistroService bistroService;
+
+    private final EntityManager entityManager;
 
     public BranchResponse createBranch(BranchRequest branchRequest) throws ResourceNotFoundException {
         if (bistroService.existByBistroId(branchRequest.getBistroId())) {
