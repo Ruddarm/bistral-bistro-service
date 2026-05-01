@@ -5,15 +5,13 @@ import com.bistral.app.bistral_bistro_service.dtos.*;
 import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
 import com.bistral.app.bistral_bistro_service.exceptions.ResourceNotFoundException;
 import com.bistral.app.bistral_bistro_service.mapperInterface.BistroMapper;
+import com.bistral.app.bistral_bistro_service.projection.BistroBranchContextProjection;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -116,4 +114,30 @@ public class BistroService {
     }
 
 
+    public List<BistroContextDto> getListOfBistroContext(List<UUID> bistroIds, List<UUID> branchIds) {
+        List<BistroBranchContextProjection> bistroBranchContextProjections =
+                bistroRepository.getBistroContext(bistroIds, branchIds);
+
+        Map<UUID, BistroContextDto> bistroContextMap = new HashMap<>();
+        bistroBranchContextProjections
+                .forEach((bistroContext) -> {
+                    bistroContextMap.computeIfAbsent(bistroContext.getBistroId(),
+                            (bistroId) ->
+                            {
+                                return BistroContextDto
+                                        .builder()
+                                        .bistroId(bistroId)
+                                        .bistroName(bistroContext.getBistroName())
+                                        .branchContextDtoMap(new HashMap<>()).build();
+                            });
+
+                    bistroContextMap.get(bistroContext.getBistroId())
+                            .getBranchContextDtoMap().put(bistroContext.getBranchId(), BranchContextDto.builder()
+                                    .branchId(bistroContext.getBranchId())
+                                    .branchName(bistroContext.getBranchName())
+                                    .build());
+                });
+
+        return bistroContextMap.values().stream().toList();
+    }
 }

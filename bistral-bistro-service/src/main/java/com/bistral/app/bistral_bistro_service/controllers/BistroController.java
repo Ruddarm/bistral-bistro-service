@@ -57,4 +57,12 @@ public class BistroController {
     public ResponseEntity<List<BistroWithMenus>> getAllBistroWithMenus(@PathVariable UUID userId) {
         return ResponseEntity.ok(bistroService.getListOfBistroWithMenus(userId));
     }
+
+
+    @PostMapping("/internal/context")
+    public ResponseEntity<List<BistroContextDto>> getBistroContext(@RequestBody BistroContextRequestDto bistroContextRequestDto) {
+        return ResponseEntity.ok(bistroService.getListOfBistroContext(bistroContextRequestDto.getBistroIds(),
+                bistroContextRequestDto.getBranchIds()));
+    }
+
 }

@@ -33,10 +33,14 @@ public class UserLoginInterceptor implements HandlerInterceptor {
         String bistroId = request.getHeader("X-Bistro-Id");
         String branchId = request.getHeader("X-Branch-Id");
         String roleId = request.getHeader("X-Role-Id");
-        Set<String> permissions = new ObjectMapper()
-                .readValue(Base64.getDecoder().decode(request.getHeader("X-Permissions")),
-                        new TypeReference<Set<String>>() {
-                        });
+        Set<String> permissions=null;
+        if (request.getHeader("X-Permissions") != null && !request.getHeader("X-Permissions").trim().isEmpty()) {
+             permissions = new ObjectMapper()
+                    .readValue(Base64.getDecoder().decode(request.getHeader("X-Permissions")),
+                            new TypeReference<Set<String>>() {
+                            });
+        }
+
         if (userId != null) {
             UserContextHolder.setAuthContext(
                     AuthContext.builder()
@@ -44,7 +48,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
                             .bistroId(bistroId == null ? null : UUID.fromString(bistroId))
                             .branchId(branchId == null ? null : UUID.fromString(branchId))
                             .userId(UUID.fromString(userId))
-                            .permissions(permissions==null?new HashSet<>():permissions)
+                            .permissions(permissions == null ? new HashSet<>() : permissions)
                             .build()
             );
         }
@@ -62,7 +66,7 @@ public class UserLoginInterceptor implements HandlerInterceptor {
      */
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
         UserContextHolder.clear();
+        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
     }
 }

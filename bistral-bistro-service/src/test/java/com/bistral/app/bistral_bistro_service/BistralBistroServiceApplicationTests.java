@@ -2,6 +2,7 @@ package com.bistral.app.bistral_bistro_service;
 
 import com.bistral.app.bistral_bistro_service.dtos.*;
 import com.bistral.app.bistral_bistro_service.entity.enums.ItemUnit;
+import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
 import com.bistral.app.bistral_bistro_service.service.BistroService;
 import com.bistral.app.bistral_bistro_service.service.MenuItemService;
 import com.bistral.app.bistral_bistro_service.service.MenuItemVariantService;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @SpringBootTest
 class BistralBistroServiceApplicationTests {
@@ -21,6 +23,9 @@ class BistralBistroServiceApplicationTests {
 
     @Autowired
     private MenuService menuService;
+
+    @Autowired
+    private BistroRepository bistroRepository;
 
     @Autowired
     private MenuItemService menuItemService;
@@ -76,5 +81,18 @@ class BistralBistroServiceApplicationTests {
         List<MenuItemResponse> menu = menuService.getListOfAllMenuItemsUsingJoin(menuResponse.getMenuId(), bistroResponse.getBistroId());
         for (MenuItemResponse response : menu)
             System.out.println(response);
+    }
+
+
+    @Test
+    public void testingRepository() {
+
+        bistroRepository
+                .getBistroContext(List.of(UUID.fromString("fbaf6532-2dbd-4566-a297-8fb5a83c54ba")),
+                        List.of(UUID.fromString("c2280862-63ae-4503-9dc8-fa39988bf936")
+                                , UUID.fromString(
+                                        "096199b1-5eff-48d5-8439-3722e42c5d93"))
+                ).forEach(System.out::println);
+
     }
 }

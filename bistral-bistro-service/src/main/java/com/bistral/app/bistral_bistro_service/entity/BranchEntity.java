@@ -10,7 +10,7 @@ import lombok.*;
 import org.hibernate.engine.internal.Cascade;
 
 @Entity
-@Table(name = "bistro_branch",
+@Table(name = "bistro_branches",
         indexes = {@Index(name = "branchId_bistro", columnList = "bistroId,branchId",unique = true)}
 )
 @NoArgsConstructor

@@ -14,7 +14,6 @@ public class PermissionAspect {
 
     @Before("@annotation(hasPermission)")
     public void checkPermission(HasPermission hasPermission) {
-        System.err.println("Inside aspect");
         AuthContext authContext = UserContextHolder.getAuthContext();
         if (authContext == null) {
             throw new UnauthorizedException("Auth Context Not found..! Please Login and Try Again");

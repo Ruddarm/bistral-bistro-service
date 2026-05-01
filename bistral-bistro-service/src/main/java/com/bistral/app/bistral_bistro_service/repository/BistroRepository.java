@@ -3,6 +3,7 @@ package com.bistral.app.bistral_bistro_service.repository;
 import com.bistral.app.bistral_bistro_service.dtos.BistroResponse;
 import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
 import com.bistral.app.bistral_bistro_service.entity.BranchEntity;
+import com.bistral.app.bistral_bistro_service.projection.BistroBranchContextProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -45,6 +46,21 @@ public interface BistroRepository extends JpaRepository<BistroEntity, UUID> {
     @Query("Select b From BistroEntity b Left join Fetch b.menuEntities m Where b.userId= :userId Order By b.bistroName")
     List<BistroEntity> findAllBistroWithMenuByUserId(UUID userId);
 
+    @Query("""
+            Select new 
+            com.bistral.app.bistral_bistro_service.projection.BistroBranchContextProjection(
+            b.bistroId,
+            b.bistroName,
+            br.branchId,
+            br.branchName
+            )
+            From BistroEntity  b
+            Left Join Fetch  BranchEntity br
+            on b.bistroId = br.bistro.bistroId
+            where b.bistroId in (:bistroIds) and
+            br.branchId in (:branchIds)
+            """)
+    List<BistroBranchContextProjection> getBistroContext(List<UUID> bistroIds,
+                                                         List<UUID> branchIds);
 
-//    public Optional<BistroEntity> findBistroWithBranches(@Param("bistroId") UUID bistroId);
 }

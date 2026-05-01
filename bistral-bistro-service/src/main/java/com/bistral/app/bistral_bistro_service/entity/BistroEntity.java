@@ -12,7 +12,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Getter
 @Setter
-@Table(name = "bistro")
+@Table(name = "bistros")
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -21,17 +21,22 @@ public class BistroEntity {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "bistro_id")
     private UUID bistroId;
-    @Column(nullable = false)
+
+    @Column(name = "bistro_name", nullable = false)
     private String bistroName;
     private String logoUrl;
-//    private String Address;
-    @Column(nullable = false)
+
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
     @UpdateTimestamp
+
     private LocalDateTime updatedAt;
     @OneToMany(mappedBy = "bistro", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<BranchEntity> branches;

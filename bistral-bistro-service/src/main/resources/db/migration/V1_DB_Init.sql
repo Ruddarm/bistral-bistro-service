@@ -27,31 +27,32 @@ SET default_table_access_method = heap;
 -- Name: bistro; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.bistro (
+CREATE TABLE public.bistros (
     bistro_id uuid NOT NULL,
     bistro_name character varying(255) NOT NULL,
-    created_at timestamp(6) without time zone,
+    created_at timestamp(6) NOT NULL without time zone,
     logo_url character varying(255),
     updated_at timestamp(6) without time zone,
     user_id uuid NOT NULL
 );
 
 
-ALTER TABLE public.bistro OWNER TO postgres;
+ALTER TABLE public.bistros OWNER TO postgres;
 
 --
 -- Name: bistro_branch; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.bistro_branch (
+CREATE TABLE public.bistro_branches (
     branch_id uuid NOT NULL,
     address character varying(255),
     branch_name character varying(255) NOT NULL,
-    bistro_id uuid
+    bistro_id uuid not null
+
 );
 
 
-ALTER TABLE public.bistro_branch OWNER TO postgres;
+ALTER TABLE public.bistro_branches OWNER TO postgres;
 
 --
 -- Name: bistro_tables; Type: TABLE; Schema: public; Owner: postgres
@@ -163,7 +164,7 @@ ALTER TABLE public.menus OWNER TO postgres;
 -- Name: bistro_branch bistro_branch_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.bistro_branch
+ALTER TABLE ONLY public.bistro_branches
     ADD CONSTRAINT bistro_branch_pkey PRIMARY KEY (branch_id);
 
 
@@ -171,7 +172,7 @@ ALTER TABLE ONLY public.bistro_branch
 -- Name: bistro bistro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.bistro
+ALTER TABLE ONLY public.bistros
     ADD CONSTRAINT bistro_pkey PRIMARY KEY (bistro_id);
 
 
@@ -203,7 +204,7 @@ ALTER TABLE ONLY public.branch_zones
 -- Name: bistro_branch branchid_bistro; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.bistro_branch
+ALTER TABLE ONLY public.bistro_branches
     ADD CONSTRAINT branchid_bistro UNIQUE (bistro_id, branch_id);
 
 
@@ -293,7 +294,7 @@ ALTER TABLE ONLY public.menu_item
 --
 
 ALTER TABLE ONLY public.branch_zones
-    ADD CONSTRAINT fk_zone_branch FOREIGN KEY (branch_id) REFERENCES public.bistro_branch(branch_id);
+    ADD CONSTRAINT fk_zone_branch FOREIGN KEY (branch_id) REFERENCES public.bistro_branches(branch_id);
 
 
 --
@@ -301,7 +302,7 @@ ALTER TABLE ONLY public.branch_zones
 --
 
 ALTER TABLE ONLY public.bistro_tables
-    ADD CONSTRAINT fkb5yif5tt6gv1o3t3s600ms7nd FOREIGN KEY (branch) REFERENCES public.bistro_branch(branch_id);
+    ADD CONSTRAINT fkb5yif5tt6gv1o3t3s600ms7nd FOREIGN KEY (branch) REFERENCES public.bistro_branches(branch_id);
 
 
 --
@@ -316,8 +317,8 @@ ALTER TABLE ONLY public.menu_item_category
 -- Name: bistro_branch fkbcmeiqkqdye585bhy22uuphkl; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.bistro_branch
-    ADD CONSTRAINT fkbcmeiqkqdye585bhy22uuphkl FOREIGN KEY (bistro_id) REFERENCES public.bistro(bistro_id);
+ALTER TABLE ONLY public.bistro_branches
+    ADD CONSTRAINT fkbcmeiqkqdye585bhy22uuphkl FOREIGN KEY (bistro_id) REFERENCES public.bistros(bistro_id);
 
 
 --
@@ -325,7 +326,7 @@ ALTER TABLE ONLY public.bistro_branch
 --
 
 ALTER TABLE ONLY public.menus
-    ADD CONSTRAINT fkmj1gmhx6rf9snmrjd12wci0mg FOREIGN KEY (bistro_id) REFERENCES public.bistro(bistro_id);
+    ADD CONSTRAINT fkmj1gmhx6rf9snmrjd12wci0mg FOREIGN KEY (bistro_id) REFERENCES public.bistros(bistro_id);
 
 
 --
@@ -340,6 +341,6 @@ ALTER TABLE ONLY public.menu_item
 -- PostgreSQL database dump complete
 --
 ----\unrestrict CT06vxNcMTrjESzS7KFrqg3i7FFQBdB9FebVEGRufTzvz8mcVQmpyUdB3M1fvmF
-Alter table public.bistro_branch add constraint unique_branch_name unique(branch_name,bistro_id);
-Alter table public.bistro_branch alter column bistro_id set not null
+Alter table public.bistro_branches add constraint unique_branch_name unique(branch_name,bistro_id);
+Alter table public.bistro_branches alter column bistro_id set not null
 
