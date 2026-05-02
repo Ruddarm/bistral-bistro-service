@@ -128,11 +128,11 @@ public class BistroService {
                                         .builder()
                                         .bistroId(bistroId)
                                         .bistroName(bistroContext.getBistroName())
-                                        .branchContextDtoMap(new HashMap<>()).build();
+                                        .branches(new ArrayList<>()).build();
                             });
 
                     bistroContextMap.get(bistroContext.getBistroId())
-                            .getBranchContextDtoMap().put(bistroContext.getBranchId(), BranchContextDto.builder()
+                            .getBranches().add(BranchContextDto.builder()
                                     .branchId(bistroContext.getBranchId())
                                     .branchName(bistroContext.getBranchName())
                                     .build());

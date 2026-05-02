@@ -17,5 +17,5 @@ import java.util.UUID;
 public class BistroContextDto {
     private UUID bistroId;
     private String bistroName;
-    Map<UUID,BranchContextDto> branchContextDtoMap;
+    private List<BranchContextDto> branches;
 }
