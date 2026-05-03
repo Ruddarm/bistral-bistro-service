@@ -1,0 +1,7 @@
+FROM  eclipse-temurin:21-jdk-jammy
+WORKDIR /app
+COPY target/bistral-bistro-serivce-0.0.1-SNAPSHOT.jar bistral-api-gateway-service.jar
+
+EXPOSE 8084
+
+ENTRYPOINT ["java","-jar","bistral-api-gateway-service.jar"]
