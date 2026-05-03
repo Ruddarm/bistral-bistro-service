@@ -44,8 +44,7 @@ public class MenuItemService {
      */
     @Transactional
     public MenuItemResponse createMenuItem(MenuItemRequest menuItemRequest) {
-        MenuEntity menuEntity = menuService.findByMenuIdAndBistro_BistroId(menuItemRequest.getMenuId(),
-                menuItemRequest.getBistroId());
+        MenuEntity menuEntity = menuService.findByMenuIdAndBistro_BistroId(menuItemRequest.getMenuId());
         MenuItemCategoryEntity menuItemCategoryEntity = menuItemCategoryService.findById(menuItemRequest.getCategoryId());
         MenuItemEntity menuItemEntity = menuItemMapper.toMenuItemEntity(menuItemRequest);
         MenuItemEntity finalMenuItemEntity = menuItemEntity;

@@ -1,6 +1,6 @@
 FROM  eclipse-temurin:21-jdk-jammy
 WORKDIR /app
-COPY target/bistral-bistro-serivce-0.0.1-SNAPSHOT.jar bistral-api-gateway-service.jar
+COPY target/bistral-bistro-service-0.0.1-SNAPSHOT.jar bistral-api-gateway-service.jar
 
 EXPOSE 8084
 

@@ -16,6 +16,5 @@ import java.util.UUID;
 public class MenuRequest {
     @NotEmpty
     private  String menuName;
-    @NotNull
-    private UUID bistroId;
+
 }

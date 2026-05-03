@@ -1,5 +1,6 @@
 package com.bistral.app.bistral_bistro_service.service;
 
+import com.bistral.app.bistral_bistro_service.contexts.UserContextHolder;
 import com.bistral.app.bistral_bistro_service.dtos.*;
 import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuEntity;
@@ -24,9 +25,11 @@ public class MenuService {
     private final ModelMapper modelMapper;
 
     public MenuResponse createMenu(MenuRequest menuRequest) throws ResourceNotFoundException {
-        BistroEntity bistro = bistroService.getBistroEntityById(menuRequest.getBistroId());
+        BistroEntity bistro = bistroService.getBistroEntityById(UserContextHolder
+                .getAuthContext().getBistroId());
         MenuEntity menuEntity = modelMapper.map(menuRequest, MenuEntity.class);
         menuEntity.setBistro(bistro);
+        menuEntity.setCreatedBy(UserContextHolder.getAuthContext().getUserId());
         menuEntity = menuRepository.save(menuEntity);
         return modelMapper.map(menuEntity, MenuResponse.class);
     }
@@ -36,8 +39,9 @@ public class MenuService {
                 .orElseThrow(() -> new ResourceNotFoundException("Menu", "Menu not found with : " + menuId));
     }
 
-    public MenuEntity findByMenuIdAndBistro_BistroId(UUID menuId, UUID bistroId) {
-        return menuRepository.findByMenuIdAndBistro_BistroId(menuId, bistroId)
+    public MenuEntity findByMenuIdAndBistro_BistroId(UUID menuId) {
+        return menuRepository.findByMenuIdAndBistro_BistroId(menuId, UserContextHolder
+                        .getAuthContext().getBistroId())
                 .orElseThrow(() -> new ResourceNotFoundException("Menu", "Menu not found with " + menuId));
     }
 
@@ -57,8 +61,9 @@ public class MenuService {
 //                .toList();
 //    }
 
-    public List<MenuItemResponse> getListOfAllMenuItemsUsingJoin(UUID menuID, UUID bistroId) {
-        MenuEntity menuEntity = menuRepository.findByMenuIdAndBistro_BistroId(menuID, bistroId).orElseThrow(() -> new ResourceNotFoundException("Menu", "Menu not found with Id : " + menuID));
+    public List<MenuItemResponse> getListOfAllMenuItemsUsingJoin(UUID menuID) {
+        MenuEntity menuEntity = menuRepository.findByMenuIdAndBistro_BistroId(menuID,
+                UserContextHolder.getAuthContext().getBistroId()).orElseThrow(() -> new ResourceNotFoundException("Menu", "Menu not found with Id : " + menuID));
         return menuEntity
                 .getMenuItemEntities()
                 .stream()
@@ -75,8 +80,8 @@ public class MenuService {
                 }).toList();
     }
 
-    public MenuResponse updateMenuByMenuIdAndBistroID(UUID menuId, UUID bistroId, Map<String, Object> updates) {
-        MenuEntity menuEntity = findByMenuIdAndBistro_BistroId(menuId, bistroId);
+    public MenuResponse updateMenuByMenuIdAndBistroID(UUID menuId, Map<String, Object> updates) {
+        MenuEntity menuEntity = findByMenuIdAndBistro_BistroId(menuId);
         Set<String> blockedUpdates = Set.of("menuItemEntities", "bistro");
         updates.forEach((key, value) -> {
             if (blockedUpdates.contains(key)) return;
@@ -101,12 +106,12 @@ public class MenuService {
                     .itemId(row.getItemId())
                     .itemName(row.getItemName())
                     .isVeg(row.getIsVeg())
-                            .categoryName(row.getCategoryName())
+                    .categoryName(row.getCategoryName())
                     .menuItemVariantResponsesList(new ArrayList<>())
                     .build());
             if (row.getVariantId() != null) {
                 itemMap.get(row.getItemId()).getMenuItemVariantResponsesList().add(MenuItemVariantResponse.builder()
-                                .variantName(row.getVariantName())
+                        .variantName(row.getVariantName())
                         .variantId(row.getVariantId())
                         .isTaxIncluded(row.getIsTaxIncluded())
                         .price(row.getPrice())
@@ -115,10 +120,16 @@ public class MenuService {
                         .build());
             }
         }
-        for(MenuItemResponse menuItemResponse : itemMap.values()){
+        for (MenuItemResponse menuItemResponse : itemMap.values()) {
 
             items.get(menuItemResponse.getCategoryName()).add(menuItemResponse);
         }
         return MenuCardResponse.builder().menuId(menuId).menuItems(items).build();
+    }
+
+    public List<MenuResponse> menuListing() {
+        return menuRepository.findAllMenusByBistroId(
+                UserContextHolder.getAuthContext().getBistroId()
+        );
     }
 }

@@ -14,20 +14,20 @@ public class WebConfig implements WebMvcConfigurer{
 
     private final UserLoginInterceptor userLoginInterceptor;
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // sab endpoints ke liye
-                        .allowedOrigins("*") // frontend origin
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(false);
-
-            }
-        };
-    }
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**") // sab endpoints ke liye
+//                        .allowedOrigins(""*) // frontend origin
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                        .allowedHeaders("*")
+//                        .allowCredentials(false);
+//
+//            }
+//        };
+//    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

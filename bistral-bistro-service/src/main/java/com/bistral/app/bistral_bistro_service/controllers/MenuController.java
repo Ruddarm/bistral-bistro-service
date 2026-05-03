@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/bistros/{bistroId}/menus")
+@RequestMapping("/bistros/menus")
 public class MenuController {
 
     private final ModelMapper modelMapper;
@@ -29,24 +29,34 @@ public class MenuController {
     }
 
     @GetMapping("/{menuId}")
-    public ResponseEntity<MenuResponse> getMenus(@PathVariable UUID bistroId, @PathVariable UUID menuId) {
-        return ResponseEntity.ok(modelMapper.map(menuService.findByMenuIdAndBistro_BistroId(bistroId, menuId), MenuResponse.class));
+    public ResponseEntity<MenuResponse> getMenus(@PathVariable UUID menuId) {
+        return ResponseEntity.ok(modelMapper.map(menuService.findByMenuIdAndBistro_BistroId(menuId), MenuResponse.class));
     }
 
     @PatchMapping("/{menuId}")
-    public ResponseEntity<MenuResponse> updateMenus(@PathVariable UUID bistroId, @PathVariable UUID menuId, @RequestBody Map<String, Object> updates) {
+    public ResponseEntity<MenuResponse> updateMenus(@PathVariable UUID menuId, @RequestBody Map<String, Object> updates) {
         return ResponseEntity.ok(
-                menuService.updateMenuByMenuIdAndBistroID(menuId, bistroId, updates));
+                menuService.updateMenuByMenuIdAndBistroID(menuId, updates));
     }
 
 
     @GetMapping("/{menuId}/card")
-    public  ResponseEntity<MenuCardResponse> getMenuCard(@PathVariable UUID menuId){
-        return  ResponseEntity.ok(menuService.getMenuCard(menuId));
+    public ResponseEntity<MenuCardResponse> getMenuCard(@PathVariable UUID menuId) {
+        return ResponseEntity.ok(menuService.getMenuCard(menuId));
     }
 
     @GetMapping("/{menuId}/items")
     public ResponseEntity<List<MenuItemResponse>> getMenuWithItem(@PathVariable UUID bistroId, @PathVariable UUID menuId) {
-        return ResponseEntity.ok(menuService.getListOfAllMenuItemsUsingJoin(menuId, bistroId));
+        return ResponseEntity.ok(menuService.getListOfAllMenuItemsUsingJoin(menuId));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<List<MenuResponse>>> getMenuList() {
+        return ResponseEntity.ok(
+                ApiResponse
+                        .<List<MenuResponse>>builder()
+                        .data(menuService.menuListing())
+                        .build()
+        );
     }
 }

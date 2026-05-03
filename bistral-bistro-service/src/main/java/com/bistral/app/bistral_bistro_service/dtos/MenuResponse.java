@@ -15,4 +15,5 @@ public class MenuResponse {
     private UUID menuId;
     private String menuName;
     private UUID bistroId;
+    private String  bistroName;
 }

@@ -1,6 +1,7 @@
 package com.bistral.app.bistral_bistro_service.service;
 
 import com.bistral.app.bistral_bistro_service.contexts.UserContext;
+import com.bistral.app.bistral_bistro_service.contexts.UserContextHolder;
 import com.bistral.app.bistral_bistro_service.dtos.*;
 import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
 import com.bistral.app.bistral_bistro_service.exceptions.ResourceNotFoundException;
@@ -49,6 +50,7 @@ public class BistroService {
                 .collect(Collectors.toList());
     }
 
+
     public BistroEntity getBistroEntityById(UUID bistroId) throws ResourceNotFoundException {
         return bistroRepository.findById(bistroId)
                 .orElseThrow(() -> new ResourceNotFoundException("Bistro", "Bistro not found with Id " + bistroId));
@@ -74,8 +76,10 @@ public class BistroService {
         @Param bistroId
         @Return @link{List<BranchResponse>} return a list of all branches
      */
-    public List<BranchResponse> getListOfBranches(UUID bistroId) throws ResourceNotFoundException {
-        BistroEntity bistroEntity = bistroRepository.findBistroWithBranches(bistroId).orElseThrow(
+    public List<BranchResponse> getListOfBranches() throws ResourceNotFoundException {
+        BistroEntity bistroEntity = bistroRepository.findBistroWithBranches(
+                UserContextHolder.getAuthContext().getBistroId()
+        ).orElseThrow(
                 () -> new ResourceNotFoundException("", "bistro not found")
         );
         return bistroEntity.getBranches()
@@ -88,8 +92,10 @@ public class BistroService {
         A method to get a list of all menus for a bistro
 
      */
-    public List<MenuResponse> getListOfMenus(UUID bistroId) throws ResourceNotFoundException {
-        BistroEntity bistroEntity = getBistroEntityById(bistroId);
+    @Deprecated
+    public List<MenuResponse> getListOfMenus() throws ResourceNotFoundException {
+        BistroEntity bistroEntity = getBistroEntityById(UserContextHolder
+                .getAuthContext().getBistroId());
         return bistroEntity.getMenuEntities()
                 .stream()
                 .map((menu) -> modelMapper.map(menu, MenuResponse.class))

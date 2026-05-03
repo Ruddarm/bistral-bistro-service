@@ -38,15 +38,11 @@ public class BistroController {
         return ResponseEntity.ok(bistroService.createBistro(bistroRequest));
     }
 
-    @GetMapping("/list/branch/{bistroId}")
-    public ResponseEntity<List<BranchResponse>> getAllBistros(@PathVariable UUID bistroId) {
-        return ResponseEntity.ok(bistroService.getListOfBranches(bistroId));
+    @GetMapping("/list/branch/")
+    public ResponseEntity<List<BranchResponse>> getAllBistros() {
+        return ResponseEntity.ok(bistroService.getListOfBranches());
     }
 
-    @GetMapping("/list/menus/{bistroId}")
-    public ResponseEntity<List<MenuResponse>> getAllMenus(@PathVariable UUID bistroId) {
-        return ResponseEntity.ok(bistroService.getListOfMenus(bistroId));
-    }
 
     @GetMapping("/list/bistros/user/{userId}")
     public ResponseEntity<List<BistroResponse>> getAllBistrosOfUser(@PathVariable UUID userId) {

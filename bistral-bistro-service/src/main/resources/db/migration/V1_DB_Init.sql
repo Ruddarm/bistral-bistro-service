@@ -154,7 +154,9 @@ ALTER TABLE public.menu_item_variant OWNER TO postgres;
 CREATE TABLE public.menus (
     menu_id uuid NOT NULL,
     menu_name character varying(255),
-    bistro_id uuid
+    bistro_id uuid,
+    ADD COLUMN updated_at TIMESTAMP,
+    ADD COLUMN updated_by UUID;
 );
 
 

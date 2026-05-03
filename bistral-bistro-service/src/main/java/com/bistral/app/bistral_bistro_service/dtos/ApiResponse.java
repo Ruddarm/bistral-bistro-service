@@ -1,4 +1,4 @@
-package com.bistral.app.bistral_auth_service.dtos;
+package com.bistral.app.bistral_bistro_service.dtos;
 
 
 import lombok.AllArgsConstructor;
