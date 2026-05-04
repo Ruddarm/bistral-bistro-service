@@ -8,13 +8,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.UUID;
 
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/bistros/menu-category")
+@RequestMapping("/bistros/menus/{menuId}/category")
 public class MenuItemCategoryController {
 
     private final MenuItemCategoryService menuItemCategoryService;
@@ -24,8 +25,8 @@ public class MenuItemCategoryController {
         return ResponseEntity.ok(menuItemCategoryService.createCategory(menuItemCategoryRequest));
     }
 
-    @GetMapping("/all/{menuId}")
-    ResponseEntity<List<MenuItemCategoryResponse>>  getAllCategory(@PathVariable UUID menuId){
-        return  ResponseEntity.ok(menuItemCategoryService.findAllByMenuId(menuId));
+    @GetMapping("/list")
+    ResponseEntity<List<MenuItemCategoryResponse>> getAllCategory(@PathVariable UUID menuId) {
+        return ResponseEntity.ok(menuItemCategoryService.findAllByMenuId(menuId));
     }
 }

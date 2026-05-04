@@ -9,6 +9,7 @@ import com.bistral.app.bistral_bistro_service.mapperInterface.BistroMapper;
 import com.bistral.app.bistral_bistro_service.projection.BistroBranchContextProjection;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,8 @@ public class BistroService {
     public BistroResponse createBistro(BistroRequest bistroRequest) {
         BistroEntity bistroEntity = bistroMapper.toEntity(bistroRequest);
         // TODO : User user form user context after authentciaton is implemented
-        bistroEntity.setUserId(bistroRequest.getUserId());
+        bistroEntity.setUserId(UserContextHolder
+                .getAuthContext().getUserId());
         bistroRepository.save(bistroEntity);
         return bistroMapper.toResponse(bistroEntity);
     }
@@ -56,9 +58,12 @@ public class BistroService {
                 .orElseThrow(() -> new ResourceNotFoundException("Bistro", "Bistro not found with Id " + bistroId));
     }
 
-    public BistroResponse getBistroResponseByBistroID(UUID bistroId) throws ResourceNotFoundException {
-        BistroEntity bistroEntity = bistroRepository.findByBistroId(bistroId).orElseThrow(
-                () -> new ResourceNotFoundException("Bistro", "Bistro not found with Id " + bistroId)
+    public BistroResponse getBistroResponseByBistroID() throws ResourceNotFoundException {
+        BistroEntity bistroEntity = bistroRepository.findByBistroId(
+                UserContextHolder.getAuthContext().getBistroId()
+        ).orElseThrow(
+                () -> new ResourceNotFoundException("Bistro", "Bistro not found with Id " + UserContextHolder
+                        .getAuthContext().getBistroId())
         );
         return BistroResponse.builder().bistroName(bistroEntity.getBistroName())
                 .bistroId(bistroEntity.getBistroId())

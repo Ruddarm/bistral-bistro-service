@@ -17,6 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BistroRequest {
 
+    @NotNull
     @NotEmpty
     private  String bistroName;
 
@@ -24,5 +25,5 @@ public class BistroRequest {
 
     private String address;
 
-    private UUID userId;
+
 }

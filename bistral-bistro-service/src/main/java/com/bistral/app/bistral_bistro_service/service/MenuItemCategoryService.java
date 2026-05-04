@@ -21,7 +21,7 @@ public class MenuItemCategoryService {
     private final MenuService menuService;
 
     public MenuItemCategoryResponse createCategory(MenuItemCategoryRequest menuItemCategoryRequest) {
-        MenuEntity menuEntity = menuService.findById(menuItemCategoryRequest.menuId());
+        MenuEntity menuEntity = menuService.findByMenuIdAndBistro_BistroId(menuItemCategoryRequest.menuId());
         MenuItemCategoryEntity menuItemCategoryEntity = MenuItemCategoryEntity
                 .builder()
                 .categoryName(menuItemCategoryRequest.categoryName())

@@ -23,9 +23,9 @@ public class BistroController {
     private final BistroMapper bistroMapper;
 
 
-    @GetMapping("/{bistroId}")
-    public ResponseEntity<BistroResponse> getBistroById(@PathVariable UUID bistroId) {
-        return ResponseEntity.ok(bistroService.getBistroResponseByBistroID(bistroId));
+    @GetMapping()
+    public ResponseEntity<BistroResponse> getBistroById() {
+        return ResponseEntity.ok(bistroService.getBistroResponseByBistroID());
     }
 
 
