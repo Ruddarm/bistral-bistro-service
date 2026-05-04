@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/bistros/{bistroId}/menu-category")
+@RequestMapping("/bistros/menu-category")
 public class MenuItemCategoryController {
 
     private final MenuItemCategoryService menuItemCategoryService;

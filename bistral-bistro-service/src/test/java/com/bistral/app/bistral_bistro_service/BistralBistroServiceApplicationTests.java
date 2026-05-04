@@ -1,7 +1,7 @@
 package com.bistral.app.bistral_bistro_service;
 
 import com.bistral.app.bistral_bistro_service.dtos.*;
-import com.bistral.app.bistral_bistro_service.entity.enums.ItemUnit;
+import com.bistral.app.bistral_bistro_service.enums.ItemUnit;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
 import com.bistral.app.bistral_bistro_service.service.BistroService;
 import com.bistral.app.bistral_bistro_service.service.MenuItemService;

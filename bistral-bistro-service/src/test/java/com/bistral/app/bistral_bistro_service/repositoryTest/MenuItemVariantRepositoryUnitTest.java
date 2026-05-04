@@ -6,13 +6,11 @@ import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemVariantEntity;
-import com.bistral.app.bistral_bistro_service.entity.enums.ItemUnit;
+import com.bistral.app.bistral_bistro_service.enums.ItemUnit;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
 import com.bistral.app.bistral_bistro_service.repository.MenuItemRepository;
 import com.bistral.app.bistral_bistro_service.repository.MenuItemVariantRepository;
 import com.bistral.app.bistral_bistro_service.repository.MenuRepository;
-
-import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

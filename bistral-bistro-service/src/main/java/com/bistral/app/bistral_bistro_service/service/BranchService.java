@@ -1,6 +1,7 @@
 package com.bistral.app.bistral_bistro_service.service;
 
 
+import com.bistral.app.bistral_bistro_service.contexts.UserContextHolder;
 import com.bistral.app.bistral_bistro_service.dtos.BranchRequest;
 import com.bistral.app.bistral_bistro_service.dtos.BranchResponse;
 import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
@@ -28,34 +29,33 @@ public class BranchService {
     private final BistroService bistroService;
 
     public BranchResponse createBranch(BranchRequest branchRequest) throws ResourceNotFoundException {
-        if (bistroService.existByBistroId(branchRequest.getBistroId())) {
-            BranchEntity branchEntity = branchMapper.toBranchEntity(branchRequest);
-            BistroEntity bistro = bistroService.getBistroEntityById(branchRequest.getBistroId());
-            bistro.setBistroId(branchRequest.getBistroId());
-            branchEntity.setBistro(bistro);
-            branchEntity = branchRepository.save(branchEntity);
-            return branchMapper.toBranchResponse(branchEntity);
-        } else
-            throw new ResourceNotFoundException("Bistro", "Bistro Not found with Id : " + branchRequest.getBistroId());
+        BranchEntity branchEntity = branchMapper.toBranchEntity(branchRequest);
+        BistroEntity bistro = bistroService.getBistroEntityById(UserContextHolder
+                .getAuthContext()
+                .getBistroId());
+        branchEntity.setBistro(bistro);
+        branchEntity.setCreatedBy(UserContextHolder.getAuthContext().getUserId());
+        branchEntity = branchRepository.save(branchEntity);
+        return branchMapper.toBranchResponse(branchEntity);
     }
 
-//    public BranchResponse getBranchById(UUID branchId) throws ResourceNotFoundException {
-//        BranchEntity branchEntity = getBranchEntity(branchId);
-//        return modelMapper.map(branchEntity, BranchResponse.class);
-//    }
 
     public BranchEntity getBranchEntity(UUID branchId) throws ResourceNotFoundException {
         return branchRepository.findById(branchId).orElseThrow(() -> new ResourceNotFoundException("Branch", "Branch not found with Id" + branchId));
     }
 
-    public BranchEntity getBranchByBranchIDAndBistroId(UUID branchId, UUID bistroId) {
-        return branchRepository.findByBranchIdAndBistroId(branchId, bistroId).orElseThrow(
+    public BranchEntity getBranchByBranchIDAndBistroId() {
+        UUID branchId = UserContextHolder.getAuthContext().getBranchId();
+        UUID bistroId = UserContextHolder.getAuthContext().getBistroId();
+        return branchRepository.findByBranchIdAndBistroId(
+                branchId, bistroId
+        ).orElseThrow(
                 () -> new ResourceNotFoundException("Bistro's Branch", String.format("Branch not found with branch id %s and bistro id %s", branchId, bistroId))
         );
     }
 
-    public BranchResponse updateBranchByBistroAndBranchId(UUID branchId, UUID bistroId, Map<String, Object> updates) throws ResourceNotFoundException {
-        BranchEntity branch = getBranchByBranchIDAndBistroId(branchId, bistroId);
+    public BranchResponse updateBranchByBistroAndBranchId(Map<String, Object> updates) throws ResourceNotFoundException {
+        BranchEntity branch = getBranchByBranchIDAndBistroId();
         updates.forEach((key, value) ->
                 {
                     Field field = ReflectionUtils.findField(BranchEntity.class, key);

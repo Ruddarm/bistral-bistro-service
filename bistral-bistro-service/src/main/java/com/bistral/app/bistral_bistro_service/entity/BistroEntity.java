@@ -36,8 +36,11 @@ public class BistroEntity {
 
     @Column(name = "updated_at")
     @UpdateTimestamp
-
     private LocalDateTime updatedAt;
+
+    @Column(name = "updatedBy")
+    private UUID updatedBy;
+
     @OneToMany(mappedBy = "bistro", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<BranchEntity> branches;
     @OneToMany(mappedBy = "bistro", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

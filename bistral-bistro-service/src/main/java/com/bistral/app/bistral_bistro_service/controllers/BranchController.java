@@ -1,5 +1,6 @@
 package com.bistral.app.bistral_bistro_service.controllers;
 
+import com.bistral.app.bistral_bistro_service.dtos.ApiResponse;
 import com.bistral.app.bistral_bistro_service.dtos.BranchRequest;
 import com.bistral.app.bistral_bistro_service.dtos.BranchResponse;
 import com.bistral.app.bistral_bistro_service.dtos.ZoneResponse;
@@ -18,7 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/bistros/{bistroId}/branches")
+@RequestMapping("/bistros/branches")
 @RequiredArgsConstructor
 public class BranchController {
 
@@ -35,21 +36,27 @@ public class BranchController {
     }
 
 
-    @GetMapping("/{branchId}")
-    public ResponseEntity<BranchResponse> getBranchByIdAndBistroId(@PathVariable UUID bistroId, @PathVariable UUID branchId) {
-        BranchEntity branchEntity = branchService.getBranchByBranchIDAndBistroId(branchId, bistroId);
+    @GetMapping("")
+    public ResponseEntity<BranchResponse> getBranchByIdAndBistroId() {
+        BranchEntity branchEntity = branchService.getBranchByBranchIDAndBistroId();
         BranchResponse response = branchMapper.toBranchResponse(branchEntity);
 //        List<ZoneResponse>  zoneResponses = branchEntity.getZones()
 //                .stream().map((zone)->modelMapper.map(zone
 //                ,ZoneResponse.class)).toList();
 //        response.setZoneResponses(zoneResponses);
 //
-        return  ResponseEntity.ok(response);
+        return ResponseEntity.ok(response);
     }
 
-    @PatchMapping("/{branchId}")
-    public ResponseEntity<?> updateBranch(@PathVariable UUID bistroId, @PathVariable UUID branchId,
-                                          @RequestBody Map<String, Object> updates) {
-        return ResponseEntity.ok(branchService.updateBranchByBistroAndBranchId(branchId, bistroId, updates));
+    @PatchMapping("")
+    public ResponseEntity<?> updateBranch(
+            @RequestBody Map<String, Object> updates) {
+        return ResponseEntity.ok(branchService.updateBranchByBistroAndBranchId(updates));
+    }
+
+
+    @GetMapping("/list")
+    public ResponseEntity<ApiResponse<List<BranchResponse>>> getBranchListByBistroId(){
+        return null;
     }
 }

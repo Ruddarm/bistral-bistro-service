@@ -38,6 +38,7 @@ public class BistroController {
         return ResponseEntity.ok(bistroService.createBistro(bistroRequest));
     }
 
+
     @GetMapping("/list/branch/")
     public ResponseEntity<List<BranchResponse>> getAllBistros() {
         return ResponseEntity.ok(bistroService.getListOfBranches());

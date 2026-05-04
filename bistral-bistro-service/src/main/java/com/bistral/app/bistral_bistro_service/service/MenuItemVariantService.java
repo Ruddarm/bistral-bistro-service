@@ -1,5 +1,6 @@
 package com.bistral.app.bistral_bistro_service.service;
 
+import com.bistral.app.bistral_bistro_service.contexts.UserContextHolder;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemVariantBulkRequest;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemVariantRequest;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemVariantResponse;
@@ -36,6 +37,7 @@ public class MenuItemVariantService {
         MenuItemEntity menuItemEntity = menuItemService.getMenuItemEntityById(menuItemVariantRequest.getMenuId(), menuItemVariantRequest.getItemId());
         MenuItemVariantEntity variantEntity = menuItemVariantMapper.toVariantEntity(menuItemVariantRequest);
         variantEntity.setMenuItem(menuItemEntity);
+        variantEntity.setCreatedBy(UserContextHolder.getAuthContext().getUserId());
         return menuItemVariantRepository.save(variantEntity);
     }
 

@@ -1,10 +1,13 @@
 package com.bistral.app.bistral_bistro_service.entity;
 
-import com.bistral.app.bistral_bistro_service.entity.enums.ItemUnit;
+import com.bistral.app.bistral_bistro_service.enums.ItemUnit;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
@@ -40,6 +43,21 @@ public class MenuItemVariantEntity {
     @ManyToOne
     @JoinColumn(nullable = false, name = "menu_item_id")
     private MenuItemEntity menuItem;
+
+    @CreationTimestamp
+    @Column(name = "createdAt", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private UUID createdBy;
+
+    @Column(name = "updatedAt")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updatedBy")
+    private UUID updatedBy;
+
 
     @Override
     public String toString() {

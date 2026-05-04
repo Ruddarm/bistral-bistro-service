@@ -1,9 +1,6 @@
 package com.bistral.app.bistral_bistro_service.dtos;
 
-import com.bistral.app.bistral_bistro_service.entity.enums.ItemUnit;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import com.bistral.app.bistral_bistro_service.enums.ItemUnit;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

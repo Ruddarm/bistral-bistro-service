@@ -12,8 +12,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class BranchRequest {
 
-    @NotNull
-    private UUID bistroId;
     @NotEmpty
     private String branchName;
 

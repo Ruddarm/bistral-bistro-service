@@ -1,5 +1,6 @@
 package com.bistral.app.bistral_bistro_service.service;
 
+import com.bistral.app.bistral_bistro_service.contexts.UserContextHolder;
 import com.bistral.app.bistral_bistro_service.dtos.TableRequest;
 import com.bistral.app.bistral_bistro_service.dtos.TableResponse;
 import com.bistral.app.bistral_bistro_service.entity.BranchEntity;
@@ -34,6 +35,7 @@ public class TableService {
         for (int i = 1; i <= tableRequest.getCount(); i++) {
             tableEntities.add(TableEntity.builder()
                     .tableNo(++count)
+                    .createdBy(UserContextHolder.getAuthContext().getUserId())
                     .zone(branchZoneEntity)
                     .branch(branch).build());
         }
@@ -42,8 +44,9 @@ public class TableService {
         return tableEntities.stream().map(tableMapper::toTableResponse).toList();
     }
 
-    public List<TableResponse> getTables(UUID branchId, UUID zoneId) {
-        return tableRepository.findByBranch_BranchId(branchId, zoneId);
+    public List<TableResponse> getTables(UUID zoneId) {
+        return tableRepository.findByBranch_BranchId(
+                UserContextHolder.getAuthContext().getBranchId(), zoneId);
     }
 
 }

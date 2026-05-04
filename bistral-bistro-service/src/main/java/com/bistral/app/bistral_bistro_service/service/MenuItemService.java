@@ -1,6 +1,7 @@
 package com.bistral.app.bistral_bistro_service.service;
 
 
+import com.bistral.app.bistral_bistro_service.contexts.UserContextHolder;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemRequest;
 import com.bistral.app.bistral_bistro_service.dtos.MenuItemResponse;
 import com.bistral.app.bistral_bistro_service.dtos.MenuRequest;
@@ -51,6 +52,7 @@ public class MenuItemService {
         menuItemEntity.getItemVariantEntityList().forEach(menuItemVariantEntity -> {
             menuItemVariantEntity.setMenuItem(finalMenuItemEntity);
         });
+        menuItemEntity.setCreatedBy(UserContextHolder.getAuthContext().getUserId());
         menuItemEntity.setMenu(menuEntity);
         menuItemEntity.setMenuItemCategory(menuItemCategoryEntity);
         menuItemEntity = menuItemRepository.save(menuItemEntity);

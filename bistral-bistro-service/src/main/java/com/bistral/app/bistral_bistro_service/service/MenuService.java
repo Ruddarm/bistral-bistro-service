@@ -28,6 +28,7 @@ public class MenuService {
         BistroEntity bistro = bistroService.getBistroEntityById(UserContextHolder
                 .getAuthContext().getBistroId());
         MenuEntity menuEntity = modelMapper.map(menuRequest, MenuEntity.class);
+        menuEntity.setCreatedBy(UserContextHolder.getAuthContext().getUserId());
         menuEntity.setBistro(bistro);
         menuEntity.setCreatedBy(UserContextHolder.getAuthContext().getUserId());
         menuEntity = menuRepository.save(menuEntity);
@@ -45,21 +46,6 @@ public class MenuService {
                 .orElseThrow(() -> new ResourceNotFoundException("Menu", "Menu not found with " + menuId));
     }
 
-//    public List<MenuItemResponse> getListOfAllMenuItems(UUID menuId) {
-//        return getMenuById(menuId)
-//                .getMenuItemEntities()
-//                .stream()
-//                .map((menuItem) ->
-//                        {
-//                            List<MenuItemVariantResponse> variantResponseList = menuItem.getItemVariantEntityList().stream()
-//                                    .map((menuItemVariantEntity) -> modelMapper.map(menuItemVariantEntity, MenuItemVariantResponse.class)).toList();
-//                            MenuItemResponse menuItemResponse = modelMapper.map(menuItem, MenuItemResponse.class);
-//                            menuItemResponse.setMenuItemVariantResponsesList(variantResponseList);
-//                            return menuItemResponse;
-//                        }
-//                )
-//                .toList();
-//    }
 
     public List<MenuItemResponse> getListOfAllMenuItemsUsingJoin(UUID menuID) {
         MenuEntity menuEntity = menuRepository.findByMenuIdAndBistro_BistroId(menuID,

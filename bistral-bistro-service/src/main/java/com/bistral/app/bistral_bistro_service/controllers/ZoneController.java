@@ -20,7 +20,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("bistros/{bistroId}/branch/zone")
+@RequestMapping("bistros/branch/zone")
 public class ZoneController {
 
     private final IzoneService izoneService;

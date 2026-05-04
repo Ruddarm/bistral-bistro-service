@@ -1,5 +1,6 @@
 package com.bistral.app.bistral_bistro_service.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -7,6 +8,8 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.engine.internal.Cascade;
 
 @Entity
@@ -34,8 +37,21 @@ public class BranchEntity {
     @EqualsAndHashCode.Include
     @JsonProperty("bistroId")
     private BistroEntity bistro;
-//    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true,mappedBy = "branch")
-//    private List<TableEntity> tables = new ArrayList();
     @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "branch")
     private  List<BranchZoneEntity> zones = new ArrayList<>();
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "createdBy", updatable = false , nullable = false)
+    private UUID createdBy;
+
+    @Column(name = "updatedAt")
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Column(name = "updatedBy")
+    private UUID updatedBy;
+
 }

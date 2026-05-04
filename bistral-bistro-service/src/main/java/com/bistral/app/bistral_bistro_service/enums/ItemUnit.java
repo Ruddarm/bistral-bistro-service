@@ -1,4 +1,4 @@
-package com.bistral.app.bistral_bistro_service.entity.enums;
+package com.bistral.app.bistral_bistro_service.enums;
 
 public enum ItemUnit {
     PIECE("piece"),
