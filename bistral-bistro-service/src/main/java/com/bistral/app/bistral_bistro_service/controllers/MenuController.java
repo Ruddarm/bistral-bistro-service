@@ -30,7 +30,8 @@ public class MenuController {
 
     @GetMapping("/{menuId}")
     public ResponseEntity<MenuResponse> getMenus(@PathVariable UUID menuId) {
-        return ResponseEntity.ok(modelMapper.map(menuService.findByMenuIdAndBistro_BistroId(menuId), MenuResponse.class));
+        return ResponseEntity.ok(
+                modelMapper.map(menuService.findByMenuIdAndBistro_BistroId(menuId), MenuResponse.class));
     }
 
     @PatchMapping("/{menuId}")

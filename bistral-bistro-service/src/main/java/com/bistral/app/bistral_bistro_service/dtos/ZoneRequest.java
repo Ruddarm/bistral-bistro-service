@@ -14,8 +14,6 @@ import java.util.UUID;
 @Data
 public class ZoneRequest {
 
-    @NotNull
-    private UUID branchId;
     @NotBlank
     @NotEmpty
     private  String zoneName;

@@ -82,7 +82,6 @@ public class MenuService {
 
     public MenuCardResponse getMenuCard(UUID menuId) {
         List<MenuItemFlatRow> menuItemFlatRows = menuRepository.getMenuItemFlatRows(menuId);
-        MenuCardResponse menuCardResponse = new MenuCardResponse();
         HashMap<String, List<MenuItemResponse>> items = new LinkedHashMap<>();
         HashMap<UUID, MenuItemResponse> itemMap = new HashMap<>();
         for (MenuItemFlatRow row : menuItemFlatRows) {

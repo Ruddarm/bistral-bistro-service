@@ -28,7 +28,7 @@ public class BranchController {
     private final BranchService branchService;
 
     /*
-        Crerate branch
+        Create branch
      */
     @PostMapping
     public ResponseEntity<BranchResponse> createBranch(@Valid @RequestBody BranchRequest branchRequest) {
@@ -48,6 +48,7 @@ public class BranchController {
         return ResponseEntity.ok(response);
     }
 
+//    TODO : Need TO Fix
     @PatchMapping("")
     public ResponseEntity<?> updateBranch(
             @RequestBody Map<String, Object> updates) {

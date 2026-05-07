@@ -16,4 +16,6 @@ public class ApiResponse<T> {
     Boolean isError = false;
     T data;
     Map<String,Object> meta = new HashMap<>();
+
+
 }

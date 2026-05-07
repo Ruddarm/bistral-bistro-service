@@ -50,6 +50,8 @@ public class BistroController {
         return ResponseEntity.ok(bistroService.getAllBistroOfUser(userId));
     }
 
+
+    @Deprecated
     @GetMapping("/list/bistros/menus/{userId}")
     public ResponseEntity<List<BistroWithMenus>> getAllBistroWithMenus(@PathVariable UUID userId) {
         return ResponseEntity.ok(bistroService.getListOfBistroWithMenus(userId));

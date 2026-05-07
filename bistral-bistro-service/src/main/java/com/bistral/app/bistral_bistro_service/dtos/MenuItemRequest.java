@@ -22,8 +22,7 @@ public class MenuItemRequest {
     private boolean isVeg;
     @NotNull
     private UUID menuId;
-    @NotNull
-    private  UUID bistroId;
+
     @NotNull
     private  UUID categoryId;
     private List<MenuItemVariantRequest> menuItemVariantRequests = new ArrayList<>();
