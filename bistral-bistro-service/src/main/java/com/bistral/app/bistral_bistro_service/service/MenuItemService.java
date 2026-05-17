@@ -9,6 +9,7 @@ import com.bistral.app.bistral_bistro_service.dtos.MenuResponse;
 import com.bistral.app.bistral_bistro_service.entity.MenuEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemCategoryEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemEntity;
+import com.bistral.app.bistral_bistro_service.entity.QMenuItemVariantEntity;
 import com.bistral.app.bistral_bistro_service.exceptions.ResourceNotFoundException;
 import com.bistral.app.bistral_bistro_service.mapperInterface.MenuItemMapper;
 import com.bistral.app.bistral_bistro_service.repository.MenuItemRepository;
@@ -38,6 +39,7 @@ public class MenuItemService {
     private final MenuItemRepository menuItemRepository;
     private final MenuItemMapper menuItemMapper;
 
+
     /*
         Create MenuItem for menu
         @param menuItemRequest
@@ -62,7 +64,9 @@ public class MenuItemService {
 
     public MenuItemEntity getMenuItemEntityById(UUID menuId, UUID menuItemId) {
         return menuItemRepository
-                .findByItemIdAndMenu_MenuId(menuItemId, menuId)
+                .findByItemIdAndMenu_MenuIdAndMenu_Bistro_BistroId(menuItemId, menuId,
+                        UserContextHolder.getAuthContext().getBistroId()
+                )
                 .orElseThrow(() -> new ResourceNotFoundException("MenuItem", "MenuItem not found with Id" + menuItemId));
     }
 

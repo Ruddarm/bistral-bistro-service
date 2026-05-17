@@ -53,4 +53,5 @@ public class MenuItemEntity {
 
     @Column(name = "updatedBy")
     private UUID updatedBy;
+
 }

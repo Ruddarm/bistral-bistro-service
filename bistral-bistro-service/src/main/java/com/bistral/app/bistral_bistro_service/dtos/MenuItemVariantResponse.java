@@ -23,6 +23,17 @@ public class MenuItemVariantResponse {
     private boolean isTaxIncluded;
     private BigDecimal qty;
     private ItemUnit unit;
+    private UUID menuId;
 
-
+    public MenuItemVariantResponse(UUID itemId, String itemName, String variantName, UUID variantId, BigDecimal price, BigDecimal taxRate, boolean isTaxIncluded, BigDecimal qty, ItemUnit unit) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.variantName = variantName;
+        this.variantId = variantId;
+        this.price = price;
+        this.taxRate = taxRate;
+        this.isTaxIncluded = isTaxIncluded;
+        this.qty = qty;
+        this.unit = unit;
+    }
 }

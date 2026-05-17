@@ -70,7 +70,7 @@ public class MenuItemRepositoryUnitTest {
 
     @Test
     public void testFindByItemIdAndMenu_MenuId_whenBothAreValid() {
-        MenuItemEntity menuItem = menuItemRepository.findByItemIdAndMenu_MenuId(menuItemEntity.getItemId(), menuEntity.getMenuId()).orElse(null);
+        MenuItemEntity menuItem = menuItemRepository.findByItemIdAndMenu_MenuIdAndMenu_Bistro_BistroId(menuItemEntity.getItemId(), menuEntity.getMenuId(),UUID.randomUUID()).orElse(null);
         assertThat(menuItem)
                 .isNotNull();
         assertThat(menuItem.getItemId())

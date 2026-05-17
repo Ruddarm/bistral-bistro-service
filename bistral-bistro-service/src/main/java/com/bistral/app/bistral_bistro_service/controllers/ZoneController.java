@@ -7,7 +7,7 @@ import com.bistral.app.bistral_bistro_service.dtos.ZoneResponse;
 import com.bistral.app.bistral_bistro_service.entity.BranchEntity;
 import com.bistral.app.bistral_bistro_service.entity.BranchZoneEntity;
 import com.bistral.app.bistral_bistro_service.service.BranchService;
-import com.bistral.app.bistral_bistro_service.service.bistro_zones.interfaces.ZoneService;
+import com.bistral.app.bistral_bistro_service.service.ZoneService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -26,14 +26,14 @@ public class ZoneController {
     private final BranchService branchService;
     private final ModelMapper modelMapper;
 
-    @PostMapping("/")
+    @PostMapping("")
     public ResponseEntity<ZoneResponse> createZone(@Valid @RequestBody ZoneRequest zoneRequest) {
         return ResponseEntity.ok(
                 modelMapper.map(zoneService.createZone(zoneRequest), ZoneResponse.class)
         );
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<ZoneResponse>> getAllZones() {
         return ResponseEntity.ok(zoneService.getAllBranchZones()
                 .stream().map((zone) -> {
@@ -47,7 +47,7 @@ public class ZoneController {
         );
     }
 
-    @GetMapping("/zone/{zoneId}")
+    @GetMapping("/{zoneId}")
     public ResponseEntity<ZoneResponse> getZones(@PathVariable UUID zoneId) {
         return ResponseEntity.ok(modelMapper.map(zoneService.getZone(zoneId), ZoneResponse.class));
     }

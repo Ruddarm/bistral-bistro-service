@@ -33,8 +33,10 @@ public class MenuItemVariantService {
     private final MenuItemVariantMapper menuItemVariantMapper;
 //    private Map<UUID, MenuItemVariantResponse> menuItemVariantResponseHashMap;
 
-    public MenuItemVariantEntity createMenuItemVariants(MenuItemVariantRequest menuItemVariantRequest) {
-        MenuItemEntity menuItemEntity = menuItemService.getMenuItemEntityById(menuItemVariantRequest.getMenuId(), menuItemVariantRequest.getItemId());
+    public MenuItemVariantEntity createMenuItemVariants(UUID menuId, UUID itemId, MenuItemVariantRequest menuItemVariantRequest) {
+        MenuItemEntity menuItemEntity = menuItemService.getMenuItemEntityById(
+                menuId,itemId
+        );
         MenuItemVariantEntity variantEntity = menuItemVariantMapper.toVariantEntity(menuItemVariantRequest);
         variantEntity.setMenuItem(menuItemEntity);
         variantEntity.setCreatedBy(UserContextHolder.getAuthContext().getUserId());
@@ -47,15 +49,15 @@ public class MenuItemVariantService {
     }
 
     public List<MenuItemVariantResponse> getMenuItemVariantBulk(MenuItemVariantBulkRequest menuItemVariantBulkRequestList) {
-            return   menuItemVariantRepository
-                    .getAllVariantList()
-                    .stream()
-                    .map((menuItemVariant) -> {
-                        MenuItemVariantResponse res = menuItemVariantMapper.toVariantResponse(menuItemVariant);
-                        res.setItemId(menuItemVariant.getMenuItem().getItemId());
-                        res.setItemName(menuItemVariant.getMenuItem().getItemName());
-                        return res;
-                    }).toList();
+        return menuItemVariantRepository
+                .getAllVariantList()
+                .stream()
+                .map((menuItemVariant) -> {
+                    MenuItemVariantResponse res = menuItemVariantMapper.toVariantResponse(menuItemVariant);
+                    res.setItemId(menuItemVariant.getMenuItem().getItemId());
+                    res.setItemName(menuItemVariant.getMenuItem().getItemName());
+                    return res;
+                }).toList();
     }
 
 
@@ -76,5 +78,6 @@ public class MenuItemVariantService {
                 menuItemVariantRepository.save(menuItemVariantEntity),
                 MenuItemVariantResponse.class);
     }
+
 
 }

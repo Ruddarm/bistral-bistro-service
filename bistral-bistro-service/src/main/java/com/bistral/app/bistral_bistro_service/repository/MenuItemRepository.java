@@ -22,15 +22,15 @@ public interface MenuItemRepository extends JpaRepository<MenuItemEntity, UUID> 
                     "menuItemCategory"
             }
     )
-    public Optional<MenuItemEntity> findByItemIdAndMenu_MenuId(@Param("itemId") UUID itemId, @Param("menuID") UUID menuId);
+    public Optional<MenuItemEntity> findByItemIdAndMenu_MenuIdAndMenu_Bistro_BistroId(@Param("itemId") UUID itemId, @Param("menuID") UUID menuId, UUID branchId);
 
     @Query(
             """
-               SELECT DISTINCT mi from MenuItemEntity mi 
-               LEFT JOIN FETCH mi.itemVariantEntityList v
-               Where mi.menu.menuId = :menuId AND Lower(mi.itemName)
-               LIKE LOWER(CONCAT('%',:keyword,'%'))       
-            """
+                       SELECT DISTINCT mi from MenuItemEntity mi 
+                       LEFT JOIN FETCH mi.itemVariantEntityList v
+                       Where mi.menu.menuId = :menuId AND Lower(mi.itemName)
+                       LIKE LOWER(CONCAT('%',:keyword,'%'))       
+                    """
     )
-    Page<MenuItemEntity> searchMenuItemsByMenuWithVariants(@Param("menuId") UUID menuId,@Param("keyword") String keyword, Pageable pageable);
+    Page<MenuItemEntity> searchMenuItemsByMenuWithVariants(@Param("menuId") UUID menuId, @Param("keyword") String keyword, Pageable pageable);
 }

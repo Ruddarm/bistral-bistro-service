@@ -20,8 +20,8 @@ public class MenuItemCategoryService {
     private final MenuItemCategoryRepository menuCategoryRepository;
     private final MenuService menuService;
 
-    public MenuItemCategoryResponse createCategory(MenuItemCategoryRequest menuItemCategoryRequest) {
-        MenuEntity menuEntity = menuService.findByMenuIdAndBistro_BistroId(menuItemCategoryRequest.menuId());
+    public MenuItemCategoryResponse createCategory(UUID menUId, MenuItemCategoryRequest menuItemCategoryRequest) {
+        MenuEntity menuEntity = menuService.findByMenuIdAndBistro_BistroId(menUId);
         MenuItemCategoryEntity menuItemCategoryEntity = MenuItemCategoryEntity
                 .builder()
                 .categoryName(menuItemCategoryRequest.categoryName())

@@ -21,8 +21,8 @@ public class MenuItemCategoryController {
     private final MenuItemCategoryService menuItemCategoryService;
 
     @PostMapping()
-    ResponseEntity<MenuItemCategoryResponse> createCategory(@Valid @RequestBody MenuItemCategoryRequest menuItemCategoryRequest) {
-        return ResponseEntity.ok(menuItemCategoryService.createCategory(menuItemCategoryRequest));
+    ResponseEntity<MenuItemCategoryResponse> createCategory(@PathVariable UUID menuId, @Valid @RequestBody MenuItemCategoryRequest menuItemCategoryRequest) {
+        return ResponseEntity.ok(menuItemCategoryService.createCategory(menuId, menuItemCategoryRequest));
     }
 
     @GetMapping("/list")

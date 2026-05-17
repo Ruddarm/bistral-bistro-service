@@ -17,10 +17,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MenuItemVariantRequest {
-    @NotNull
-    private UUID itemId;
-    @NotNull
-    private  UUID menuId;
+
     @NotNull
     @Min(0)
     private BigDecimal price;

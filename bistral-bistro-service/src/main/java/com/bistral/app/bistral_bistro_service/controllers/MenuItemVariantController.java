@@ -19,7 +19,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("bistros/menus/menu-items/{itemId}/variants")
+@RequestMapping("bistros/menus/{menuId}/menu-item/{itemId}/variants")
 public class MenuItemVariantController {
 
     private final ModelMapper modelMapper;
@@ -27,11 +27,13 @@ public class MenuItemVariantController {
     private final MenuItemVariantMapper menuItemVariantMapper;
 
     @PostMapping
-    public ResponseEntity<MenuItemVariantResponse> createItemVariants(@Valid @RequestBody MenuItemVariantRequest menuItemVariantRequest) {
+    public ResponseEntity<MenuItemVariantResponse> createItemVariants(
+            @PathVariable UUID menuId, @PathVariable UUID itemId, @Valid @RequestBody MenuItemVariantRequest menuItemVariantRequest) {
         return ResponseEntity.ok(
-                menuItemVariantMapper.toVariantResponse(menuItemVariantService.createMenuItemVariants(menuItemVariantRequest)));
+                menuItemVariantMapper.toVariantResponse(menuItemVariantService.createMenuItemVariants(menuId,itemId,menuItemVariantRequest)));
     }
 
+    @Deprecated
     @PostMapping("/bulk")
     public ResponseEntity<List<MenuItemVariantResponse>> getItemVariants(@Valid @RequestBody MenuItemVariantBulkRequest menuItemVariantBulkRequests) {
         return ResponseEntity.ok(menuItemVariantService.getMenuItemVariantBulk(menuItemVariantBulkRequests));
@@ -40,9 +42,6 @@ public class MenuItemVariantController {
     @GetMapping("/{variantsId}")
     public ResponseEntity<MenuItemVariantResponse> getItemVariants(@PathVariable UUID itemId, @PathVariable UUID variantsId) {
         MenuItemVariantResponse menuItemVariantResponse = menuItemVariantService.getMenuItemVariantsById(variantsId, itemId);
-//        MenuItemVariantResponse menuItemVariantResponse = menuItemVariantMapper.toVariantResponse(menuItemVariantEntity);
-//        menuItemVariantResponse.setItemId(menuItemVariantEntity.getMenuItem().getItemId());
-//        menuItemVariantResponse.setItemName(menuItemVariantEntity.getMenuItem().getItemName());
         return ResponseEntity.ok(menuItemVariantResponse);
     }
 
@@ -54,6 +53,9 @@ public class MenuItemVariantController {
                 menuItemVariantService.updateMenuItemVariantsById(variantsId, itemId, updates)
         );
     }
+
+
+
 
 
 }

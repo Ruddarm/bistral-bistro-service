@@ -8,7 +8,6 @@ import com.bistral.app.bistral_bistro_service.entity.BranchZoneEntity;
 import com.bistral.app.bistral_bistro_service.entity.TableEntity;
 import com.bistral.app.bistral_bistro_service.mapperInterface.TableMapper;
 import com.bistral.app.bistral_bistro_service.repository.TableRepository;
-import com.bistral.app.bistral_bistro_service.service.bistro_zones.implementaions.ZoneServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,12 +21,12 @@ public class TableService {
     private final TableRepository tableRepository;
     private final BranchService branchService;
     private final TableMapper tableMapper;
-    private final ZoneServiceImpl zoneServiceImpl;
+    private final ZoneService zoneService;
 
     public List<TableResponse> createTables(TableRequest tableRequest) {
         List<TableEntity> tableEntities = new ArrayList<>();
         BranchEntity branch = BranchEntity.builder().branchId(tableRequest.getBranchId()).build();
-        BranchZoneEntity branchZoneEntity = zoneServiceImpl.getZone(tableRequest.getZoneId());
+        BranchZoneEntity branchZoneEntity = zoneService.getZone(tableRequest.getZoneId());
         int count = tableRepository.findByBranch_BranchId(tableRequest.getBranchId(), tableRequest.getZoneId())
                 .size();
 //        count = count count;
