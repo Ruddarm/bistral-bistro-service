@@ -17,7 +17,6 @@ import java.util.UUID;
 @RequestMapping("/bistros")
 @RequiredArgsConstructor
 public class BistroController {
-
     private final BistroService bistroService;
     private final ModelMapper modelMapper;
     private final BistroMapper bistroMapper;

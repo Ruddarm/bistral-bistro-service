@@ -2,17 +2,15 @@ package com.bistral.app.bistral_bistro_service.service;
 
 import com.bistral.app.bistral_bistro_service.contexts.UserContextHolder;
 import com.bistral.app.bistral_bistro_service.dtos.*;
-import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
+import com.bistral.app.bistral_bistro_service.entity.Bistro;
 import com.bistral.app.bistral_bistro_service.entity.MenuEntity;
 import com.bistral.app.bistral_bistro_service.exceptions.ResourceNotFoundException;
 import com.bistral.app.bistral_bistro_service.repository.MenuRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ReflectionUtils;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -25,7 +23,7 @@ public class MenuService {
     private final ModelMapper modelMapper;
 
     public MenuResponse createMenu(MenuRequest menuRequest) throws ResourceNotFoundException {
-        BistroEntity bistro = bistroService.getBistroEntityById(UserContextHolder
+        Bistro bistro = bistroService.getBistroEntityById(UserContextHolder
                 .getAuthContext().getBistroId());
         MenuEntity menuEntity = modelMapper.map(menuRequest, MenuEntity.class);
         menuEntity.setCreatedBy(UserContextHolder.getAuthContext().getUserId());

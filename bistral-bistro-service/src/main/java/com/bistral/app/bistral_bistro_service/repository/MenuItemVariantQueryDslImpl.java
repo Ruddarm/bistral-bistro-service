@@ -48,7 +48,6 @@ public class MenuItemVariantQueryDslImpl implements MenuItemVariantQueryReposito
                                 qMenuItemVariant.qty,
                                 qMenuItemVariant.unit,
                                 qMenu.menuId
-
                         )
                 )
                 .from(qMenuItemVariant)

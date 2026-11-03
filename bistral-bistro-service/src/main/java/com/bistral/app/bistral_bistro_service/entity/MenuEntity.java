@@ -34,7 +34,7 @@ public class MenuEntity {
     private Set<MenuItemEntity> menuItemEntities = new HashSet<>();
     @ManyToOne
     @JoinColumn(name = "bistroId")
-    private BistroEntity bistro;
+    private Bistro bistro;
     @OneToMany(mappedBy = "menuEntity")
     private List<MenuItemCategoryEntity> menuItemCategoryList;
 

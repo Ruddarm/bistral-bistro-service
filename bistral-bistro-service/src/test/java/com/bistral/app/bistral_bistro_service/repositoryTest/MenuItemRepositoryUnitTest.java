@@ -1,7 +1,7 @@
 package com.bistral.app.bistral_bistro_service.repositoryTest;
 
 
-import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
+import com.bistral.app.bistral_bistro_service.entity.Bistro;
 import com.bistral.app.bistral_bistro_service.entity.MenuEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemVariantEntity;
@@ -38,7 +38,7 @@ public class MenuItemRepositoryUnitTest {
     private MenuItemRepository menuItemRepository;
     @Autowired
     private MenuItemVariantRepository menuItemVariantRepository;
-    private BistroEntity bistroEntity = BistroEntity.builder()
+    private Bistro bistro = Bistro.builder()
             .userId(UUID.randomUUID())
             .bistroName("testing-bistro").build();
     private MenuEntity menuEntity = MenuEntity.builder().menuName("testing-meu")
@@ -59,8 +59,8 @@ public class MenuItemRepositoryUnitTest {
 
     @BeforeEach
     public void createBistroAndMenu() {
-        bistroEntity = bistroRepository.save(bistroEntity);
-        menuEntity.setBistro(bistroEntity);
+        bistro = bistroRepository.save(bistro);
+        menuEntity.setBistro(bistro);
         menuEntity = menuRepository.save(menuEntity);
         menuItemEntity.setMenu(menuEntity);
         menuItemRepository.save(menuItemEntity);

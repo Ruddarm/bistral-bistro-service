@@ -10,7 +10,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.hibernate.engine.internal.Cascade;
 
 @Entity
 @Table(name = "bistro_branches",
@@ -36,7 +35,7 @@ public class BranchEntity {
     @JoinColumn(name = "bistroId")
     @EqualsAndHashCode.Include
     @JsonProperty("bistroId")
-    private BistroEntity bistro;
+    private Bistro bistro;
     @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE, orphanRemoval = true, mappedBy = "branch")
     private  List<BranchZoneEntity> zones = new ArrayList<>();
 

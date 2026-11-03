@@ -1,23 +1,16 @@
 package com.bistral.app.bistral_bistro_service.repositoryTest;
 
 
-import com.bistral.app.bistral_bistro_service.config.TestContainer;
-import com.bistral.app.bistral_bistro_service.dtos.BistroRequest;
-import com.bistral.app.bistral_bistro_service.dtos.BistroResponse;
-import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
+import com.bistral.app.bistral_bistro_service.entity.Bistro;
 import com.bistral.app.bistral_bistro_service.entity.BranchEntity;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
 import com.bistral.app.bistral_bistro_service.repository.BranchRepository;
-import com.bistral.app.bistral_bistro_service.service.BistroService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.UUID;
@@ -40,22 +33,22 @@ public class BranchRepositoryUnitTest {
     }
     @Test
     public void testFindByBranchIdAnd_bistroId_whenBothAreValid() {
-        BistroEntity bistroEntity = BistroEntity.builder().bistroName("local-bistro")
+        Bistro bistro = Bistro.builder().bistroName("local-bistro")
                 .userId(UUID.randomUUID()).build();
-        bistroEntity = bistroRepository.save(bistroEntity);
+        bistro = bistroRepository.save(bistro);
         BranchEntity branchEntity = BranchEntity
                 .builder()
                 .branchName("local-bistro-thane")
-                .bistro(bistroEntity)
+                .bistro(bistro)
                 .build();
         branchEntity = branchRepository.save(branchEntity);
-        BranchEntity branch = branchRepository.findByBranchIdAndBistroId(branchEntity.getBranchId(), bistroEntity.getBistroId())
+        BranchEntity branch = branchRepository.findByBranchIdAndBistroId(branchEntity.getBranchId(), bistro.getBistroId())
                 .orElse(null);
         Assertions.assertThat(branch)
                 .isNotNull();
         Assertions
                 .assertThat(branch.getBistro().getBistroId())
-                .isEqualTo(bistroEntity.getBistroId());
+                .isEqualTo(bistro.getBistroId());
         Assertions.assertThat(branch.getBranchId())
                 .isEqualTo(branchEntity.getBranchId());
         ;

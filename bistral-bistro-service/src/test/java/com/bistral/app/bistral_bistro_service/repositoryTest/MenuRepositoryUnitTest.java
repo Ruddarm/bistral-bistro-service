@@ -1,7 +1,7 @@
 package com.bistral.app.bistral_bistro_service.repositoryTest;
 
 
-import com.bistral.app.bistral_bistro_service.entity.BistroEntity;
+import com.bistral.app.bistral_bistro_service.entity.Bistro;
 import com.bistral.app.bistral_bistro_service.entity.MenuEntity;
 import com.bistral.app.bistral_bistro_service.entity.MenuItemEntity;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
@@ -30,19 +30,19 @@ public class MenuRepositoryUnitTest {
     @Autowired
     MenuRepository menuRepository;
 
-    private BistroEntity bistroEntity;
+    private Bistro bistro;
     private MenuEntity menuEntity;
 
     @BeforeEach
     public void createBistro() {
-        bistroEntity = BistroEntity.builder()
+        bistro = Bistro.builder()
                 .bistroName("localBistro")
                 .userId(UUID.randomUUID())
                 .build();
-        bistroEntity = bistroRepository.save(bistroEntity);
+        bistro = bistroRepository.save(bistro);
         menuEntity = MenuEntity.builder()
                 .menuName("testing Menu")
-                .bistro(bistroEntity)
+                .bistro(bistro)
                 .build();
         menuEntity = menuRepository.save(menuEntity);
     }
@@ -51,13 +51,13 @@ public class MenuRepositoryUnitTest {
     @Test
     public void testFindByMenuIdAndBistro_BistroId_whenBothAreValid() {
 
-        MenuEntity menu   = menuRepository.findByMenuIdAndBistro_BistroId(menuEntity.getMenuId(),bistroEntity.getBistroId()).orElse(null);
+        MenuEntity menu   = menuRepository.findByMenuIdAndBistro_BistroId(menuEntity.getMenuId(), bistro.getBistroId()).orElse(null);
         assertThat(menu)
                 .isNotNull()
                 .isInstanceOf(MenuEntity.class);
         assertThat(menu.getMenuId()).isEqualTo(menuEntity.getMenuId());
         assertThat(menu.getBistro().getBistroId())
-                .isEqualTo(bistroEntity.getBistroId());
+                .isEqualTo(bistro.getBistroId());
         for(MenuItemEntity item : menu.getMenuItemEntities()){
             System.out.println(item);
         }

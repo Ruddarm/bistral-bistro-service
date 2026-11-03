@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ *
+ */
 @RestController
 @RequestMapping("/bistros/menus/{menuId}/menu-items")
 @RequiredArgsConstructor
@@ -46,11 +49,24 @@ public class MenuItemController {
         return ResponseEntity.ok(menuItemResponse);
     }
 
+    /**
+     *
+     * @param menuId
+     * @param menuItemId
+     * @param updates
+     * @return
+     */
     @PatchMapping("/{menuItemId}")
     public ResponseEntity<MenuItemResponse> updateMenuItem(@PathVariable UUID menuId, @PathVariable UUID menuItemId, @RequestBody Map<String, Object> updates) {
         return ResponseEntity.ok(menuItemService.updateMenuItem(menuItemId, menuId, updates));
     }
 
+    /**
+     * Provides Endpoint to search menuItem based on keyword in given menuId
+     * @param menuId represent menuId
+     * @param keyword represent name of menu
+     * @return {@link MenuItemResponse} return menuItems based  on search criteria
+     */
     @GetMapping("/search")
     public ResponseEntity<Page<MenuItemResponse>> searchMenuItem(@PathVariable UUID menuId, @RequestParam String keyword,
                                                                  @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
