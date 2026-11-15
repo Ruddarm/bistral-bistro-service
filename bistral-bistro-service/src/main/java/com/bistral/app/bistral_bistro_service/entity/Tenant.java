@@ -6,7 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,7 +18,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Tenant {
+@EntityListeners(AuditingEntityListener.class)
+public class Tenant extends SoftDeletableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,8 +32,11 @@ public class Tenant {
     @Column(nullable = false)
     private TenantStatus tenantStatus = TenantStatus.INVITED;
 
+    @OneToOne(mappedBy = "tenant", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private SubDomainMapping subDomainMapping;
 
     @OneToMany(mappedBy = "tenant",cascade =  CascadeType.ALL , fetch = FetchType.LAZY)
     List<Bistro> bistros;
+
 }
 

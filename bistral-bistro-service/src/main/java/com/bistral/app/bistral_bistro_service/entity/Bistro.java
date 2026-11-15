@@ -17,7 +17,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Builder
-public class Bistro {
+public class Bistro  {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -35,7 +35,6 @@ public class Bistro {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
     @Column(name = "updatedBy")
-    private UUID updatedBy;
     @OneToMany(mappedBy = "bistro", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<BranchEntity> branches;
     @OneToMany(mappedBy = "bistro", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
