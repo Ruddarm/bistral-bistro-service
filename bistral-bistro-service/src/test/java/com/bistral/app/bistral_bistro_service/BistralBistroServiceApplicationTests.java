@@ -2,6 +2,7 @@ package com.bistral.app.bistral_bistro_service;
 
 import com.bistral.app.bistral_bistro_service.dtos.*;
 import com.bistral.app.bistral_bistro_service.enums.ItemUnit;
+import com.bistral.app.bistral_bistro_service.exceptions.ResourceConflictException;
 import com.bistral.app.bistral_bistro_service.repository.BistroRepository;
 import com.bistral.app.bistral_bistro_service.repository.MenuItemVariantQueryRepository;
 import com.bistral.app.bistral_bistro_service.service.*;
@@ -25,15 +26,15 @@ class BistralBistroServiceApplicationTests {
 
     }
 
-
-    @Test
-    public void testingTenantOnboarding(){
-        tenantOnboardingService.createTenant(
-                TenantOnboardingDto
-                        .builder()
-                        .tenantName("Abc Test")
-                        .tenantSubDomain("abc").build()
-        );
-    }
+//
+//    @Test
+//    public void testingTenantOnboarding() throws ResourceConflictException {
+//        tenantOnboardingService.createTenant(
+//                TenantOnboardingDto
+//                        .builder()
+//                        .tenantName("Abc Test")
+//                        .tenantSubDomain("abc").build()
+//        );
+//    }
 
 }

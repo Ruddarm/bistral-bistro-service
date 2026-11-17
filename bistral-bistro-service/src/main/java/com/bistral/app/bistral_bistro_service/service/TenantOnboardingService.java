@@ -6,7 +6,10 @@ import com.bistral.app.bistral_bistro_service.entity.SubDomainMapping;
 import com.bistral.app.bistral_bistro_service.entity.Tenant;
 import com.bistral.app.bistral_bistro_service.entity.TenantOnboarding;
 import com.bistral.app.bistral_bistro_service.entity.TenantOnboardingHistory;
+import com.bistral.app.bistral_bistro_service.enums.Resource;
 import com.bistral.app.bistral_bistro_service.enums.TenantOnboardingStatus;
+import com.bistral.app.bistral_bistro_service.enums.responseCode.TenantResponseCode;
+import com.bistral.app.bistral_bistro_service.exceptions.ResourceConflictException;
 import com.bistral.app.bistral_bistro_service.repository.TenantOnboardingRepository;
 import com.bistral.app.bistral_bistro_service.repository.TenantRepository;
 import lombok.AllArgsConstructor;
@@ -28,17 +31,20 @@ public class TenantOnboardingService {
 
     private final TenantRepository tenantRepository;
     private final TenantOnboardingRepository tenantOnboardingRepository;
-
+    private final SubDomainMappingService subDomainMappingService;
 
     /**
      * Create Tenant with given name,and subdomain.
      * DB handle constraint of that each subdomain must be unique.
+     *
      * @param tenantOnboardingDto
      * @return
      */
     @Transactional(rollbackFor = Exception.class)
-//    @HasPermission("TENANT:CREATE")
-    public UUID createTenant(@NonNull TenantOnboardingDto tenantOnboardingDto) {
+    public UUID createTenant(@NonNull TenantOnboardingDto tenantOnboardingDto) throws ResourceConflictException {
+        if (subDomainMappingService.isSubDomainTaken(tenantOnboardingDto.getTenantSubDomain())) {
+            throw ResourceConflictException.from(Resource.SUBDOMAIN, TenantResponseCode.SUBDOMAIN_TAKEN);
+        }
         SubDomainMapping subDomainMapping =
                 SubDomainMapping
                         .builder()
@@ -50,7 +56,7 @@ public class TenantOnboardingService {
                 .subDomainMapping(subDomainMapping)
                 .build();
         subDomainMapping.setTenant(tenant);
-        tenant = tenantRepository.save(tenant);
+        tenant = tenantRepository.saveAndFlush(tenant);
         TenantOnboardingHistory tenantOnboardingHistory =
                 TenantOnboardingHistory.builder()
                         .action("Tenant Created")
@@ -61,7 +67,7 @@ public class TenantOnboardingService {
                 .tenantOnboardingStatus(TenantOnboardingStatus.TENANT_CREATED)
                 .build();
         tenantOnboarding.addTenantOnboardingHistory(tenantOnboardingHistory);
-        tenantOnboardingRepository.save(tenantOnboarding);
+        tenantOnboardingRepository.saveAndFlush(tenantOnboarding);
         return tenant.getTenantId();
     }
 

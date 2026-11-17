@@ -23,7 +23,7 @@ import java.util.UUID;
  * </ul>
  * </note>
  * <notes>
- *     Pair ( subDomain,DeletedAt) must be unique
+ *     Pair (subDomain,DeletedAt) must be unique
  * </notes>
  *
  */

@@ -9,6 +9,9 @@ import lombok.Getter;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ *
+ */
 @Getter
 @MappedSuperclass
 public abstract class SoftDeletableEntity extends BaseEntity {
